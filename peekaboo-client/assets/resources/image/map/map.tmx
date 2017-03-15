@@ -5,12 +5,17 @@
  </tileset>
  <layer name="ground" width="50" height="28">
   <data encoding="base64" compression="zlib">
-   eJzdV8sOwzAIyxdUbfb//7pTpCjiYQxMUw8+LcEYDFnvMcb9EnxAXIGzFUD5OnTMZO4zyIfoOHNacR/njqcFOSPp0O780ldnDoiWC+RcOtj6dGHlw+jweufpkLyWmZXp8EV9pc0IkiPaZ6kGaC9YHTtHN1Dd6JyfvtN2I+ItL1dmBqP7SoPFLXlL29tSHMSXkg7pnhVr/dbhJXS+qvph+SYzD+i+23UgNffOWe98NXaujn540HwrvfdoTHbvojzZ/Cp1sDXuuMPqqOQ6e4PGls5572AmdlctkN3b1Q9077Ng/5dYuTJeqehTlY4OsNo0HV27siLOM2p9peWofb9GPVf9Dlp1qfJTFpYOxluMNvSOxf9vc57txxvwBVSjZAw=
+   eJzdl0sSgDAIQ3sEP/e/q+PO6VRKQxqpC3aW8ghE3Uop20/iXDxmcBwfnO9xvOXcO2d6tXieGalHOVetGqLatThYOVnMI/W09GDyRHJFObz5PPeoNF7Vd2ufQThGZ1ehiUqPmsXybaQP3j23cmXwuVX3w+Lw9jxD/+94zmYWPVreken9odKPpQfzm28GB7uXyJ4hvjtjVjLMFVqD2tMY+4F6snI/1IGyvXFEvFyhAeN7t1cjoweM/0G0J1+GxYH0FWHznrHuz7bnUT3+EBfeXmXT
+  </data>
+ </layer>
+ <layer name="wall" width="50" height="28">
+  <data encoding="base64" compression="zlib">
+   eJztlksSgCAMQzkB9z+ue4dKaBs+kjfDRpAQg4VShBAI9dWsfms8o1naEbLmYesjeayEmUfLc/azL31r3K15zISZx477qsef8ziRU3yg53n0TPa+L+6BdS+cDaKNrjHTx+h3kQ/fXKjW6H617hWe/2Glj0z9TLx1I7IORp2K1D8kz51qrRA9HuHyCsc=
   </data>
  </layer>
  <layer name="item" width="50" height="28">
   <data encoding="base64" compression="zlib">
-   eJztwQENAAAAwqD3T20ON6AAAAAAAHg0FeAAAQ==
+   eJzt2NsKgCAMAFC7R9n//24v+iJba2Om6Q4IYiaTrZKcM8ZER+kAPrKF1ipfOgAmLB/QPmagrz2mDcvHElrOMchOXOfkgxOL9j6k/lZX3Hz8TW37kD4fkDO0HHKubdo3MeZKz4ar8L6ejaUDIAzK672pEY/0jUml9fT0Pe+lriTv7wvp1yrm2Ts6l9ScXv6FtOwGzg8CVQ==
   </data>
  </layer>
 </map>
