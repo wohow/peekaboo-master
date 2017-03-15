@@ -14,6 +14,7 @@ cc.Class({
 
     properties: {
         itemAtlas: cc.SpriteAtlas,
+        bulletPrefab: cc.Prefab,// 子弹预制体
     },
 
     onLoad: function () {
@@ -23,5 +24,11 @@ cc.Class({
     // 获取道具图片
     getItemSprite: function(id){
         return this.itemAtlas._spriteFrames['item_'+id];
+    },
+
+    // 创建一个子弹
+    createrBullet: function () {
+        return cc.instantiate(this.bulletPrefab);
     }
+    
 });

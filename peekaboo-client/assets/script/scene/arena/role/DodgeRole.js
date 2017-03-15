@@ -24,4 +24,9 @@ cc.Class({
         this.itemSpr.spriteFrame = AtlasStorage().getItemSprite(id);
     },
 
+    // 被发现
+    wasfound: function (argument) {
+        console.log(this.nicknameTxt.string, ' 被发现');
+    }
+
 });

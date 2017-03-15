@@ -60,12 +60,15 @@
     "_components": [
       {
         "__id__": 9
+      },
+      {
+        "__id__": 10
       }
     ],
     "_prefab": {
-      "__id__": 10
+      "__id__": 11
     },
-    "groupIndex": 0
+    "groupIndex": 3
   },
   {
     "__type__": "cc.Node",
@@ -74,8 +77,8 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
+      "r": 0,
+      "g": 184,
       "b": 255,
       "a": 255
     },
@@ -90,7 +93,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 42,
+      "width": 34,
       "height": 20
     },
     "_children": [],
@@ -133,8 +136,8 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 20,
-    "_fontSize": 20,
+    "_actualFontSize": 16,
+    "_fontSize": 16,
     "_lineHeight": 20,
     "_enableWrapText": true,
     "_N$file": {
@@ -278,6 +281,26 @@
     },
     "nicknameTxt": {
       "__id__": 3
+    }
+  },
+  {
+    "__type__": "cc.BoxCollider",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "tag": 0,
+    "_offset": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
+    },
+    "_size": {
+      "__type__": "cc.Size",
+      "width": 32,
+      "height": 32
     }
   },
   {

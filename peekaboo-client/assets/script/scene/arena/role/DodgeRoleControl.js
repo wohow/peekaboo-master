@@ -1,8 +1,10 @@
 
 var utils = require('utils');
 
+var moveSpeed = 3;// 移动速度
+
 /**
- * 角色控制器 
+ * 角色控制器 - 躲
  * 主要是接收键盘事件
  */
 cc.Class({
@@ -14,33 +16,33 @@ cc.Class({
     onLoad: function () {
         this.roleClass = this.node.getComponent('binRole');
         this.direction = cc.p(0,0);
-        this.speed = 3;
 
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
     },
-
     onDestroy () {
         cc.systemEvent.off(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
         cc.systemEvent.off(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
     },
 
+    onMouseDown: function (event) {
+    },
 
     onKeyDown: function(event){
         if(event.keyCode === cc.KEY.shift){
-            this.speed = 0.5;
-            this.direction.x = utils.cTo1(this.direction.x) * this.speed;
-            this.direction.y = utils.cTo1(this.direction.y) * this.speed;
+            moveSpeed = 0.5;
+            this.direction.x = utils.cTo1(this.direction.x) * moveSpeed;
+            this.direction.y = utils.cTo1(this.direction.y) * moveSpeed;
         } else {
-            this.move(event, this.speed);
+            this.move(event, moveSpeed);
         }
     },
 
     onKeyUp: function(event){
         if(event.keyCode === cc.KEY.shift){
-            this.speed = 3;
-            this.direction.x = utils.cTo1(this.direction.x) * this.speed;
-            this.direction.y = utils.cTo1(this.direction.y) * this.speed;
+            moveSpeed = 3;
+            this.direction.x = utils.cTo1(this.direction.x) * moveSpeed;
+            this.direction.y = utils.cTo1(this.direction.y) * moveSpeed;
         } else {
             this.move(event, 0);
         }
@@ -64,8 +66,6 @@ cc.Class({
             case cc.KEY.down:
                 this.direction.y = -1 * speed;
                 break;
-            default:
-                return;
         }
     },
 

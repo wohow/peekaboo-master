@@ -16,8 +16,12 @@ cc.Class({
 
     properties: {
         randomItemPrefab: cc.Prefab,// 随机道具 预制体
-        randomItemNode: cc.Node,// 随机道具 
+        wallConllisionPrefab: cc.Prefab,// 内墙碰撞体
+
+        randomItemNode: cc.Node,// 随机道具层
         roleNode: cc.Node,// 角色层
+        bulletNode: cc.Node,// 子弹层
+        conllisionNode: cc.Node,// 碰撞层
     },
 
     onLoad: function () {
@@ -37,14 +41,24 @@ cc.Class({
         this.emptyGrounds = [];
         // 内墙精灵
         this.wallSprites = [];
-        for (var x = 1; x < this.girdSize.width-1; x++) {
-            for (var y = 1; y < this.girdSize.height-1; y++) {
-                if(this.itemNode.getTileGIDAt(x, y)){
-                    var tile = this.itemNode.getTileAt(x, y);
-                    this.wallSprites.push(tile);
+        for (var x = 0; x < this.girdSize.width; x++) {
+            for (var y = 0; y < this.girdSize.height; y++) {
+                // 外墙 和 内墙
+                if(x === 0 || y === 0 
+                    || x === this.girdSize.width-1 
+                    || y === this.girdSize.height-1
+                    || this.wallNode.getTileGIDAt(x, y)
+                    ){
+                    let collision = cc.instantiate(this.wallConllisionPrefab);
+                    let cx = x, cy = this.girdSize.height-1-y;
+                    collision.position = cc.p(cx*this.tileSize.width, cy*this.tileSize.height);
+                    this.conllisionNode.addChild(collision);
                     continue;
                 }
-                if(this.wallNode.getTileGIDAt(x, y)){
+                // 地面道具
+                if(this.itemNode.getTileGIDAt(x, y)){
+                    let tile = this.itemNode.getTileAt(x, y);
+                    this.wallSprites.push(tile);
                     continue;
                 }
                 this.emptyGrounds.push(cc.p(x, this.girdSize.height-1-y));
@@ -78,7 +92,12 @@ cc.Class({
     addRole: function(node){
         this.roleNode.addChild(node);
         // 设置位置
-        node.position = cc.p(1*this.tileSize.width + this.tielSizeHalf.x, 2*this.tileSize.height + this.tielSizeHalf.y);
+        node.position = cc.p(5*this.tileSize.width + this.tielSizeHalf.x, 2*this.tileSize.height + this.tielSizeHalf.y);
+    },
+
+    // 添加一个子弹
+    addBullet: function (node) {
+        this.bulletNode.addChild(node);
     },
 
     isCollide: function(x, y){

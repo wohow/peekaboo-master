@@ -1,5 +1,6 @@
 
 var MapInfo = require('MapInfo');
+var AtlasStorage = require('AtlasStorage');
 
 /**
  * 角色
@@ -20,11 +21,22 @@ cc.Class({
         this.entity.setNickname(data.nickname);
     },
 
+    // 移动
     move: function(direction){
-        // var nextPos = cc.p(this.node.x+pos.x, this.node.y+pos.y);
-        // var pos = MapInfo().isWallCollide(this.node.position, nextPos);
-        // this.node.position = pos;
-        this.node.position = MapInfo().isWallCollide(this.node.position, direction);
+        var pos = MapInfo().isWallCollide(this.node.position, direction);
+        this.directMove(pos);
+    },
+    directMove: function (position) {
+        this.node.position = position;
+    },
+
+    // 开火
+    fire: function (targetPos) {
+        var prefab = AtlasStorage().createrBullet();
+        MapInfo().addBullet(prefab);// 加入地图
+        prefab.position = this.node.position;
+        prefab.rotation = this.entity.indicatorNode.rotation;
+        prefab.runAction(cc.moveTo(2, targetPos));
     },
 
     update: function(dt){
