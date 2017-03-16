@@ -1,0 +1,9 @@
+{
+    "name":"peekaboo-server",
+    "version":"0.0.1",
+    "private":false,
+    "dependencies":{
+        "pomelo":"1.2.3"
+    }
+}
+
