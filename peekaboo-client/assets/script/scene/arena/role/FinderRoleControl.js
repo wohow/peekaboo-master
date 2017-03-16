@@ -1,5 +1,6 @@
 
 var utils = require('utils');
+var net = require('net');
 
 var moveSpeed = 2;// 移动速度
 var indicatorDir;
@@ -23,6 +24,9 @@ cc.Class({
 
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
+
+        // 开启定时向服务器提交自己的位置
+        this.schedule(this.commitPosition, 0.05);
     },
 
     onDestroy () {
@@ -34,7 +38,12 @@ cc.Class({
         var now = new Date().getTime();
         if(now - mouseClickTime >= mouseClickInterval){
             mouseClickTime = now;
-            this.roleClass.fire(this.indicatorPos);
+            var startPos = {x: this.node.x, y: this.node.y};
+            var targetPos = {x: this.indicatorPos.x, y: this.indicatorPos.y};
+            net.send('connector.syncHandler.applyFire', {startPos: startPos, targetPos: targetPos});
+            // , function (data) {
+            //     this.roleClass.fire(data.startPos, data.targetPos);
+            // }
         }
     },
 
@@ -72,12 +81,17 @@ cc.Class({
         this.roleClass.direction = this.direction;
     },
 
+    // 定时提交自己的坐标
+    commitPosition: function () {
+        var p = {x: this.node.x, y: this.node.y}
+        net.send('connector.syncHandler.commitPosition', {position: p});
+    },
+
     update: function (dt) {
-        // if(this.direction.x !== 0 || this.direction.y !== 0){
-        // }
-            // this.roleClass.move(this.direction);
+        this.roleClass.updateData(dt);
         // 刷新指示器
         indicatorDir = 90 - utils.rotation(this.node.position, this.indicatorPos);
         this.roleClass.entity.updateIndicator(indicatorDir);
     },
+
 });

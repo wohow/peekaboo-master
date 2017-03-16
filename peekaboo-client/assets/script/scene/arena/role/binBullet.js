@@ -1,5 +1,6 @@
 
 var Tween = require('TweenLite');
+var utils = require('utils');
 const range = 300;
 
 /**
@@ -15,8 +16,8 @@ cc.Class({
     },
 
     // 移动到目标位置
-    move: function(startPos, targetPos, dir){
-        this.node.rotation = dir;
+    move: function(startPos, targetPos){
+        this.node.rotation = 90 - utils.rotation(startPos, targetPos);
         this.node.position = startPos;
         var distance = cc.pDistance(startPos, targetPos);
         var ratio = range / distance;

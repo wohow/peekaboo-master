@@ -25,5 +25,10 @@ cc.Class({
         net.on('onSyncPosition', function(data){
             EventDispatcher.dispatch(EventType.SYNC_POSITION, data);
         });
+
+        // 开火
+        net.on('onFire', function (data) {
+            EventDispatcher.dispatch(EventType.SYNC_FIRE, data);
+        })
     }
 });

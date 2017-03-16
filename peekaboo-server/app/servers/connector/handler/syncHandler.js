@@ -23,5 +23,23 @@ Handler.prototype.commitPosition  = function(msg, session, next) {
 	user.position = msg.position;
 
 	// 这里同步给其他玩家
-	this.syncChannel.pushMessage('onSyncPosition', {uid: user.uid, position: user.position});
+	this.syncChannel.pushMessage('onSyncPosition', {
+		uid: user.uid, 
+		position: user.position
+	});
+};
+
+/**
+ * 申请开火
+ */
+Handler.prototype.applyFire  = function(msg, session, next) {
+	
+	var user = UserManager.getUser(session.uid);
+
+	// 这里同步给其他玩家
+	this.syncChannel.pushMessage('onFire', {
+		uid: user.uid,
+		startPos: msg.startPos,
+		targetPos: msg.targetPos
+	});
 };

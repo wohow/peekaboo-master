@@ -47,5 +47,5 @@ exp.nameIsExists = function(nickname){
 
 // 玩家离线
 exp.userLeave = function (uid) {
-	delete users[uid];	
+	delete users[uid];
 };

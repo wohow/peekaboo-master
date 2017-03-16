@@ -43,23 +43,6 @@ cc.Class({
         this.node.off(cc.Node.EventType.MOUSE_MOVE, this.onMouseMove, this);
     },
 
-    onMouseDown: function (event) {
-        if(this.myRoleControl){
-            this.myRoleControl.onMouseDown(event);
-        }
-    },
-    
-    onMouseMove: function (event) {
-        if(this.myRoleControl){
-            this.myRoleControl.onMouseMove(event);
-        }
-    },
-
-    syncPosition: function(data){
-        var role = this.getRole(data.uid);
-        role.setPos(data.position);
-    },
-
     // 初始化地图
     init: function(){
         // 先随机隐藏 地面物品
@@ -105,6 +88,36 @@ cc.Class({
     getRole: function(uid){
         var arr = this.roles.filter((m)=> m.uid === uid);
         return arr.length === 0 ? null : arr[0];
-    }
+    },
+
+    onMouseDown: function (event) {
+        if(this.myRoleControl){
+            this.myRoleControl.onMouseDown(event);
+        }
+    },
+    
+    onMouseMove: function (event) {
+        if(this.myRoleControl){
+            this.myRoleControl.onMouseMove(event);
+        }
+    },
+
+        // 同步坐标
+    syncPosition: function(data){
+        if(data.uid === Player.uid)
+            return;
+        var role = this.getRole(data.uid);
+        if(!role)
+            return;
+        role.setDirection(data.position);
+    },
+
+    // 同步开火
+    syncFire: function (data) {
+        var role = this.getRole(data.uid);
+        if(!role)
+            return;
+        role.fire(data.startPos, data.targetPos);
+    },
 
 });

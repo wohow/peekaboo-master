@@ -21,13 +21,13 @@ cc.Class({
 
         SceneManager.load(function(cb){
 
-            net.connect({host: '127.0.0.1', port: 3010}, function(){
+            net.connect({host: '192.168.1.103', port: 3010}, function(){
                 net.send('connector.entryHandler.entry', {nickname: nickname}, function(data){
                     if(data.code === 200){
                         Player.init(data.user);
                         GameData.players = data.users;
                         setTimeout(function(){
-                            cb('arena');
+                            cb('room');
                         }, 100);
                     } else {
                         console.log(data.error);
