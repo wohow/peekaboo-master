@@ -1,4 +1,5 @@
 
+var Tween = require('TweenLite');
 const range = 300;
 
 /**
@@ -23,20 +24,17 @@ cc.Class({
         var ry = (targetPos.y - startPos.y) * ratio;
         var nx = rx + startPos.x;
         var ny = ry + startPos.y;
-        var act1 = cc.moveTo(0.4, nx, ny);
-        var act2 = cc.callFunc(()=>{
+
+        Tween.to(this.node, 0.4, {x: nx, y: ny, onComplete: ()=>{
             this.toDestroy();
-        });
-        this.node.runAction(cc.sequence(act1, act2));
+        }});
     },
 
     toDestroy: function(){
-        this.node.stopAllActions();
-        var act1 = cc.fadeTo(0.5, 0);
-        var act2 = cc.callFunc(()=>{
+        Tween.killTweensOf(this.node, false);
+        Tween.to(this.node, 0.5, {opacity: 0, onComplete: ()=>{
             this.node.destroy();
-        });
-        this.node.runAction(cc.sequence(act1, act2));
+        }});
     },
 
     // 碰撞

@@ -42,11 +42,11 @@ cc.Class({
         var self = this;
         let tl = new Timeline();
         tl.add([
-            Tween.to(self.itemSpr.node, 0.3, {scale: 0, onComplete: function(){
+            Tween.to(self.itemSpr.node, 0.2, {scale: 0, onComplete: function(){
                 self.setItemSpr(0);
             }}),
             Tween.to(self.itemSpr.node, 0.3, {scale: 1.2}),
-            Tween.to(self.itemSpr.node, 0.3, {scale: 1}),
+            Tween.to(self.itemSpr.node, 0.2, {scale: 1}),
             ], '', 'sequence');
         tl.play();
     }
