@@ -100,7 +100,7 @@ cc.Class({
 
         // 同步坐标
         var p = {x: this.node.x, y: this.node.y}
-        net.send('connector.syncHandler.commitPosition', {position: p});
+        // net.send('connector.syncHandler.commitPosition', {position: p});
     }
 
 });

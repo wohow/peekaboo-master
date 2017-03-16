@@ -5,7 +5,7 @@
   "wrapMode": "clamp",
   "filterMode": "bilinear",
   "subMetas": {
-    "item": {
+    "Item": {
       "ver": "1.0.3",
       "uuid": "568e09cb-589d-4f08-b30f-d97ba3f8945d",
       "rawTextureUuid": "b55df140-7966-411c-92f1-c5be0a90f89f",
