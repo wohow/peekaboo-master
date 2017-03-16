@@ -1,0 +1,43 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "role_idle",
+  "_objFlags": 0,
+  "_rawFiles": null,
+  "_duration": 0.4,
+  "sample": 10,
+  "speed": 1,
+  "wrapMode": 2,
+  "curveData": {
+    "comps": {
+      "cc.Sprite": {
+        "spriteFrame": [
+          {
+            "frame": 0,
+            "value": {
+              "__uuid__": "8e7f3493-a1ae-40f9-b81a-8fb9bf4b7790"
+            }
+          },
+          {
+            "frame": 0.1,
+            "value": {
+              "__uuid__": "df9c918c-2ff2-413b-bc36-9b3d99dd6d22"
+            }
+          },
+          {
+            "frame": 0.2,
+            "value": {
+              "__uuid__": "aa6fde9c-bbc5-4ed9-bd12-a75f5faea24a"
+            }
+          },
+          {
+            "frame": 0.3,
+            "value": {
+              "__uuid__": "a9684d73-d34a-419b-bdf3-9303535d70e8"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "events": []
+}

@@ -82,7 +82,7 @@ cc.Class({
             var point = this.emptyGrounds[indexs[i]];
             // console.log(point);
             var item = cc.instantiate(this.randomItemPrefab);
-            item.getComponent(cc.Sprite).spriteFrame = AtlasStorage().getItemSprite(8);
+            item.getComponent(cc.Sprite).spriteFrame = AtlasStorage().randomItemSprite();
             item.position = cc.p(point.x*this.tileSize.width, point.y*this.tileSize.height);
             this.randomItemNode.addChild(item);
         }
@@ -92,7 +92,8 @@ cc.Class({
     addRole: function(node){
         this.roleNode.addChild(node);
         // 设置位置
-        node.position = cc.p(5*this.tileSize.width + this.tielSizeHalf.x, 2*this.tileSize.height + this.tielSizeHalf.y);
+        var x = utils.random(1, 5);
+        node.position = cc.p(x*this.tileSize.width + this.tielSizeHalf.x, 2*this.tileSize.height + this.tielSizeHalf.y);
     },
 
     // 添加一个子弹

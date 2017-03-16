@@ -1,4 +1,6 @@
 
+var utils = require('utils');
+
 /**
  * AtlasStorage 
  * 图集
@@ -24,6 +26,12 @@ cc.Class({
     // 获取道具图片
     getItemSprite: function(id){
         return this.itemAtlas._spriteFrames['item_'+id];
+    },
+
+    // 随机一个道具
+    randomItemSprite: function(){
+        var id = utils.random(1, 12);
+        return this.getItemSprite(id);
     },
 
     // 创建一个子弹

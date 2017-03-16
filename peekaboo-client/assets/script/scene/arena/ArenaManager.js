@@ -20,7 +20,7 @@ cc.Class({
         this.status = 1;// 当前状态 1.准备阶段 2.躲阶段 3.找阶段
 
         cc.director.getCollisionManager().enabled = true;
-        cc.director.getCollisionManager().enabledDebugDraw = true;
+        // cc.director.getCollisionManager().enabledDebugDraw = true;
     },
 
     onDestroy: function () {

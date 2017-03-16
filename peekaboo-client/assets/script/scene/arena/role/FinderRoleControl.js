@@ -3,6 +3,8 @@ var utils = require('utils');
 
 var moveSpeed = 2;// 移动速度
 var indicatorDir;
+var mouseClickInterval = 400;// 鼠标点击间隔(毫秒)
+var mouseClickTime = 0;// 鼠标点击时间
 
 /**
  * 角色控制器 - 找
@@ -29,7 +31,11 @@ cc.Class({
     },
 
     onMouseDown: function (event) {
-        this.roleClass.fire(this.indicatorPos);
+        var now = new Date().getTime();
+        if(now - mouseClickTime >= mouseClickInterval){
+            mouseClickTime = now;
+            this.roleClass.fire(this.indicatorPos);
+        }
     },
 
     onMouseMove: function (event) {
@@ -63,12 +69,13 @@ cc.Class({
                 this.direction.y = -1 * speed;
                 break;
         }
+        this.roleClass.direction = this.direction;
     },
 
     update: function (dt) {
-        if(this.direction.x !== 0 || this.direction.y !== 0){
-            this.roleClass.move(this.direction);
-        }
+        // if(this.direction.x !== 0 || this.direction.y !== 0){
+        // }
+            // this.roleClass.move(this.direction);
         // 刷新指示器
         indicatorDir = 90 - utils.rotation(this.node.position, this.indicatorPos);
         this.roleClass.entity.updateIndicator(indicatorDir);

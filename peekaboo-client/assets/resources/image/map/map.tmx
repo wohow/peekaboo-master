@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="50" height="28" tilewidth="32" tileheight="32">
- <tileset firstgid="1" name="Item" tilewidth="32" tileheight="32">
-  <image source="Item.png" width="128" height="160"/>
+ <tileset firstgid="1" name="item" tilewidth="32" tileheight="32">
+  <image source="item.png" width="128" height="160"/>
  </tileset>
  <layer name="ground" width="50" height="28">
   <data encoding="base64" compression="zlib">
-   eJzdl0sSgDAIQ3sEP/e/q+PO6VRKQxqpC3aW8ghE3Uop20/iXDxmcBwfnO9xvOXcO2d6tXieGalHOVetGqLatThYOVnMI/W09GDyRHJFObz5PPeoNF7Vd2ufQThGZ1ehiUqPmsXybaQP3j23cmXwuVX3w+Lw9jxD/+94zmYWPVreken9odKPpQfzm28GB7uXyJ4hvjtjVjLMFVqD2tMY+4F6snI/1IGyvXFEvFyhAeN7t1cjoweM/0G0J1+GxYH0FWHznrHuz7bnUT3+EBfeXmXT
+   eJztmMEOABEMRPsF1v7/z+5VeiCtoR32MBcJ+jpMRBGRcohect3AURPU9/uRU6OzwcJxih8ejqoUXePJHLouVg7Nw87B5ocndzNyjPjYOXb7sXqdVRxPo97YDEtbWzYO735ojqj7NMORKQPY8yoidy1rWfdlerf3+ormyHTPd/cYMc/CgTzf6DyP9gOl6H9MpD6RNlrI
   </data>
  </layer>
  <layer name="wall" width="50" height="28">
   <data encoding="base64" compression="zlib">
-   eJztlksSgCAMQzkB9z+ue4dKaBs+kjfDRpAQg4VShBAI9dWsfms8o1naEbLmYesjeayEmUfLc/azL31r3K15zISZx477qsef8ziRU3yg53n0TPa+L+6BdS+cDaKNrjHTx+h3kQ/fXKjW6H617hWe/2Glj0z9TLx1I7IORp2K1D8kz51qrRA9HuHyCsc=
+   eJztl0sOgCAMRDmD3v+u7hsLU/uPfUljotDpCAqsNQy1uA+hbR+Bhy6a00rb890huS30I8b/pIE8R+Y45VKGpE7kW/IYU67WrxpWNY4PHE4D/T938KHpT9tEhLWPrHWWIlnzq/vI7G9FpI+3sUfvSfNKqeJDS4V5NT5sc1Sgq48q580oMs+1GZqSfeJuP8FdtfzNR3bObjweyAvF
   </data>
  </layer>
  <layer name="item" width="50" height="28">
   <data encoding="base64" compression="zlib">
-   eJzt2NsKgCAMAFC7R9n//24v+iJba2Om6Q4IYiaTrZKcM8ZER+kAPrKF1ipfOgAmLB/QPmagrz2mDcvHElrOMchOXOfkgxOL9j6k/lZX3Hz8TW37kD4fkDO0HHKubdo3MeZKz4ar8L6ejaUDIAzK672pEY/0jUml9fT0Pe+lriTv7wvp1yrm2Ts6l9ScXv6FtOwGzg8CVQ==
+   eJztl9sKwCAIhmWndnz/191NgxG1mdnB8AMZyHLKv9IAlBZZaifQOTtDjCFh7YX0KQBjwW9N1hQapnYCCLbaCTDxrmNliHcyxKCQUw/KXnbXYM75Hv8pyTx1lOwd3JTSYrZG8WFw65CqCbceHDOoj6+7g1sDpm9Q7yKHNYrvDz2n+kHCzCgRjplQSccEnjH65OoVMYTq8L2ne7oNbrldAak=
   </data>
  </layer>
 </map>

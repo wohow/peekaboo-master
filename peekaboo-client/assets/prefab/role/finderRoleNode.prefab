@@ -62,11 +62,11 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 14
+        "__id__": 15
       }
     ],
     "_prefab": {
-      "__id__": 15
+      "__id__": 16
     },
     "groupIndex": 0
   },
@@ -260,7 +260,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 56
+      "y": 45.7
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -356,14 +356,14 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 32,
-      "height": 60
+      "width": 146,
+      "height": 154
     },
     "_children": [],
     "_rotationX": 0,
     "_rotationY": 0,
-    "_scaleX": 1,
-    "_scaleY": 1,
+    "_scaleX": 0.35,
+    "_scaleY": 0.35,
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
@@ -380,10 +380,13 @@
     "_components": [
       {
         "__id__": 12
+      },
+      {
+        "__id__": 13
       }
     ],
     "_prefab": {
-      "__id__": 13
+      "__id__": 14
     },
     "groupIndex": 0
   },
@@ -396,10 +399,10 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "8cdb44ac-a3f6-449f-b354-7cd48cf84061"
+      "__uuid__": "8e7f3493-a1ae-40f9-b81a-8fb9bf4b7790"
     },
     "_type": 0,
-    "_sizeMode": 0,
+    "_sizeMode": 1,
     "_fillType": 0,
     "_fillCenter": {
       "__type__": "cc.Vec2",
@@ -411,7 +414,33 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "bf063455-4f69-4222-a6e0-788668b603cf"
+    }
+  },
+  {
+    "__type__": "cc.Animation",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 11
+    },
+    "_enabled": true,
+    "_defaultClip": {
+      "__uuid__": "66f5abd7-449b-49d4-b8dc-d9a4a6a5c6ec"
+    },
+    "_clips": [
+      {
+        "__uuid__": "66f5abd7-449b-49d4-b8dc-d9a4a6a5c6ec"
+      },
+      {
+        "__uuid__": "cba67fd6-6b5f-4e45-b454-911682f6370f"
+      },
+      {
+        "__uuid__": "2eb20e85-399d-4465-989b-5a3d11a0dc14"
+      }
+    ],
+    "playOnLoad": false
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -437,6 +466,9 @@
     },
     "indicatorNode": {
       "__id__": 2
+    },
+    "body": {
+      "__id__": 11
     }
   },
   {

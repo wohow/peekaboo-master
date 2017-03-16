@@ -14,7 +14,7 @@ cc.Class({
         finderRolePrefab: cc.Prefab,// 找
 
         hideItemCount: 10, // 隐藏个数
-        generateItemCount: 5,// 生成个数
+        generateItemCount: 10,// 生成个数
     },
 
     onLoad: function () {
@@ -42,11 +42,15 @@ cc.Class({
     },
 
     onMouseDown: function (event) {
-        this.myRoleControl.onMouseDown(event);
+        if(this.myRoleControl){
+            this.myRoleControl.onMouseDown(event);
+        }
     },
     
     onMouseMove: function (event) {
-        this.myRoleControl.onMouseMove(event);
+        if(this.myRoleControl){
+            this.myRoleControl.onMouseMove(event);
+        }
     },
 
     // 初始化地图
@@ -76,6 +80,7 @@ cc.Class({
             profession: 0
         };
         var roleNode = this.createrRole(data);
+        
     },
 
     createrRole: function (data) {
@@ -92,6 +97,7 @@ cc.Class({
         bin.init(data, entity);
         // 加入地图
         this.mapInfo.addRole(roleNode);
+        roleNode.zIndex = data.profession;
 
         // 测试
         if(data.profession === 0){

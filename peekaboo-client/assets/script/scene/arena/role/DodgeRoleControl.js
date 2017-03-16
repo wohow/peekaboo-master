@@ -27,6 +27,8 @@ cc.Class({
 
     onMouseDown: function (event) {
     },
+    onMouseMove: function (event) {
+    },
 
     onKeyDown: function(event){
         if(event.keyCode === cc.KEY.shift){
@@ -67,12 +69,13 @@ cc.Class({
                 this.direction.y = -1 * speed;
                 break;
         }
+        this.roleClass.direction = this.direction;
     },
 
     update: function (dt) {
-        if(this.direction.x === 0 && this.direction.y === 0)
-            return;
-        this.roleClass.move(this.direction);
+        // if(this.direction.x === 0 && this.direction.y === 0)
+        //     return;
+        // this.roleClass.move(this.direction);
     },
 
 });

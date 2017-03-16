@@ -79,36 +79,6 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>item_13.png</key>
-            <dict>
-                <key>aliases</key>
-                <array/>
-                <key>spriteOffset</key>
-                <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{32,32}</string>
-                <key>spriteSourceSize</key>
-                <string>{32,32}</string>
-                <key>textureRect</key>
-                <string>{{32,96},{32,32}}</string>
-                <key>textureRotated</key>
-                <false/>
-            </dict>
-            <key>item_14.png</key>
-            <dict>
-                <key>aliases</key>
-                <array/>
-                <key>spriteOffset</key>
-                <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{32,32}</string>
-                <key>spriteSourceSize</key>
-                <string>{32,32}</string>
-                <key>textureRect</key>
-                <string>{{64,96},{32,32}}</string>
-                <key>textureRotated</key>
-                <false/>
-            </dict>
             <key>item_2.png</key>
             <dict>
                 <key>aliases</key>
@@ -240,7 +210,7 @@
                 <key>spriteSourceSize</key>
                 <string>{32,32}</string>
                 <key>textureRect</key>
-                <string>{{96,96},{32,32}}</string>
+                <string>{{32,96},{32,32}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -255,7 +225,7 @@
                 <key>spriteSourceSize</key>
                 <string>{32,32}</string>
                 <key>textureRect</key>
-                <string>{{0,128},{32,32}}</string>
+                <string>{{64,96},{32,32}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -270,11 +240,41 @@
                 <key>spriteSourceSize</key>
                 <string>{32,32}</string>
                 <key>textureRect</key>
-                <string>{{32,128},{32,32}}</string>
+                <string>{{96,96},{32,32}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
             <key>map_3.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{32,32}</string>
+                <key>spriteSourceSize</key>
+                <string>{32,32}</string>
+                <key>textureRect</key>
+                <string>{{0,128},{32,32}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>map_4.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{32,32}</string>
+                <key>spriteSourceSize</key>
+                <string>{32,32}</string>
+                <key>textureRect</key>
+                <string>{{32,128},{32,32}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>map_5.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -299,13 +299,13 @@
             <key>premultiplyAlpha</key>
             <false/>
             <key>realTextureFileName</key>
-            <string>Item.png</string>
+            <string>item.png</string>
             <key>size</key>
             <string>{128,160}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:a0359c3e5ad41487621d088f3c51b147:43a57fe1855450241f227452723fedfa:eb41154dee1bc01d711a38924ec169e0$</string>
+            <string>$TexturePacker:SmartUpdate:e3de6e55e5a9df6a01f60faa65721e14:2cb07931113ff6b0582c13f32785df8d:59939a4a587d378f0fcbb69f55d845d5$</string>
             <key>textureFileName</key>
-            <string>Item.png</string>
+            <string>item.png</string>
         </dict>
     </dict>
 </plist>

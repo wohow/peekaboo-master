@@ -10,10 +10,12 @@ cc.Class({
     properties: {
         nicknameTxt: cc.Label,
         indicatorNode: cc.Node,// 指示器 
+        body: cc.Node,
     },
 
     onLoad: function () {
         this.indicatorNode.active = false;
+        this.animation = this.body.getComponent(cc.Animation);
     },
 
     setNickname: function(nickname){
