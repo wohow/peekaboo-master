@@ -3,6 +3,7 @@ var MapInfo = require('MapInfo');
 var AtlasStorage = require('AtlasStorage');
 var utils = require('utils');
 var Tween = require('TweenLite');
+var net = require('net');
 
 /**
  * 角色
@@ -21,8 +22,14 @@ cc.Class({
     },
 
     init: function(data, entity){
+        this.uid = data.uid;
         this.entity = entity;
         this.entity.setNickname(data.nickname);
+        if(data.profession === 0){
+            this.entity.setItemSpr(5);
+        } else {
+            this.entity.isShowIndicator(true);
+        }
     },
 
     // 移动
@@ -90,6 +97,10 @@ cc.Class({
             this.playAnim('role_run');
             this.move(this.direction);
         }
+
+        // 同步坐标
+        var p = {x: this.node.x, y: this.node.y}
+        net.send('connector.syncHandler.commitPosition', {position: p});
     }
 
 });

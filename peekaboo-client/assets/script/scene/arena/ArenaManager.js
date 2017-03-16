@@ -1,6 +1,9 @@
 
-var Player = require('Player');
 const MapControl = require('MapControl');
+var Player = require('Player');
+var net = require('net');
+var EventDispatcher = require('EventDispatcher');
+var EventType = require('EventType');
 
 /**
  * 竞技场管理中心
@@ -21,15 +24,28 @@ cc.Class({
 
         cc.director.getCollisionManager().enabled = true;
         // cc.director.getCollisionManager().enabledDebugDraw = true;
+        var self = this;
+        self.syncpositionCallback = function(data){
+            self.mapControl.syncPosition(data);
+        };
+        EventDispatcher.listen(EventType.SYNC_POSITION, self.syncpositionCallback);
     },
 
     onDestroy: function () {
         cc.director.getCollisionManager().enabled = false;
+        EventDispatcher.remove(EventType.SYNC_POSITION, self.syncpositionCallback);
     },
 
     start: function(){
         this.mapControl.init();
 
+        // 这里开始做rtt
+        this.schedule(function(){
+            net.send('connector.entryHandler.rtt', {time: new Date().getTime()}, function(data){
+                var now = new Date().getTime();
+                console.log('rtt：', now-data.time);
+            });
+        }, 30);
     },
 
     // 躲阶段 躲全亮 找全黑

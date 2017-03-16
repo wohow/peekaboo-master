@@ -1,5 +1,8 @@
 
 var SceneManager = require('SceneManager');
+var net = require('net');
+var Player = require('Player');
+var GameData = require('GameData');
 
 cc.Class({
     extends: cc.Component,
@@ -14,12 +17,23 @@ cc.Class({
 
     // 点击开始按钮
     onClickStart: function(){
-        // SceneManager.load('arena');
+        var nickname = this.nicknameEditbox.string;
+
         SceneManager.load(function(cb){
 
-            setTimeout(function(){
-                cb('arena');
-            }, 4000)
+            net.connect({host: '127.0.0.1', port: 3010}, function(){
+                net.send('connector.entryHandler.entry', {nickname: nickname}, function(data){
+                    if(data.code === 200){
+                        Player.init(data.user);
+                        GameData.players = data.users;
+                        setTimeout(function(){
+                            cb('arena');
+                        }, 100);
+                    } else {
+                        console.log(data.error);
+                    }
+                })
+            });
         });
     }
 });

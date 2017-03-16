@@ -2,6 +2,8 @@
 const binRole = require('binRole');
 const DodgeRoleControl = require('DodgeRoleControl');
 const FinderRoleControl = require('FinderRoleControl');
+var Player = require('Player');
+var GameData = require('GameData');
 
 /**
  * 地图控制器
@@ -53,6 +55,11 @@ cc.Class({
         }
     },
 
+    syncPosition: function(data){
+        var role = this.getRole(data.uid);
+        role.setPos(data.position);
+    },
+
     // 初始化地图
     init: function(){
         // 先随机隐藏 地面物品
@@ -65,22 +72,16 @@ cc.Class({
 
     // 初始化玩家
     initAllRole: function(){
-        var data = {
-            uid: '1',
-            nickname: '找找找',
-            profession: 1
-        };
-        var roleNode = this.createrRole(data);
-        // 如果是自己就添加这个控制脚本 主要用于接收键盘事件
-        this.myRoleControl = roleNode.addComponent(FinderRoleControl);
-        
-        var data = {
-            uid: '2',
-            nickname: '躲躲躲',
-            profession: 0
-        };
-        var roleNode = this.createrRole(data);
-        
+        this.roles = [];
+        for (var i = 0; i < GameData.players.length; i++) {
+            var user = GameData.players[i];
+            var role = this.createrRole(user);
+            if(user.uid === Player.uid){
+                var control = this.professions[user.profession].RoleControl;
+                this.myRoleControl = role.node.addComponent(control);
+            }
+            this.roles.push(role);
+        }
     },
 
     createrRole: function (data) {
@@ -98,14 +99,12 @@ cc.Class({
         // 加入地图
         this.mapInfo.addRole(roleNode);
         roleNode.zIndex = data.profession;
+        return bin;
+    },
 
-        // 测试
-        if(data.profession === 0){
-            entity.setItemSpr(5);
-        } else {
-            entity.isShowIndicator(true);
-        }
-        return roleNode;
+    getRole: function(uid){
+        var arr = this.roles.filter((m)=> m.uid === uid);
+        return arr.length === 0 ? null : arr[0];
     }
 
 });
