@@ -3,3 +3,4 @@ library/
 local/
 packages/
 temp/
+logs/
