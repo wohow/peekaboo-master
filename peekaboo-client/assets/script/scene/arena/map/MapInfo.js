@@ -22,6 +22,8 @@ cc.Class({
         roleNode: cc.Node,// 角色层
         bulletNode: cc.Node,// 子弹层
         conllisionNode: cc.Node,// 碰撞层
+
+        doorNode: cc.Node,// 门
     },
 
     onLoad: function () {
@@ -30,9 +32,11 @@ cc.Class({
         this.groundNode = this.tiledMap.getLayer('ground');
         this.wallNode = this.tiledMap.getLayer('wall');
         this.itemNode = this.tiledMap.getLayer('item');
+        this.bornPointNode0 = this.tiledMap.getLayer('bornPoint0');
+        this.bornPointNode1 = this.tiledMap.getLayer('bornPoint1');
         // 格子大小
         this.girdSize = this.groundNode.getLayerSize();
-        console.log(this.girdSize);
+        // console.log(this.girdSize);
         // tile大小
         this.tileSize = this.groundNode.getMapTileSize();
         this.tielSizeHalf = cc.p(this.tileSize.width*0.5, this.tileSize.height*0.5);
@@ -41,6 +45,10 @@ cc.Class({
         this.emptyGrounds = [];
         // 内墙精灵
         this.wallSprites = [];
+        // 出生点
+        this.bornPoints0 = [];
+        this.bornPoints1 = [];
+
         for (var x = 0; x < this.girdSize.width; x++) {
             for (var y = 0; y < this.girdSize.height; y++) {
                 // 外墙 和 内墙
@@ -62,13 +70,29 @@ cc.Class({
                     continue;
                 }
                 this.emptyGrounds.push(cc.p(x, this.girdSize.height-1-y));
+                // 出生点
+                if(this.bornPointNode0.getTileGIDAt(x, y)){
+                    this.bornPoints0.push(cc.p(x, this.girdSize.height-1-y));
+                }
+                if(this.bornPointNode1.getTileGIDAt(x, y)){
+                    this.bornPoints1.push(cc.p(x, this.girdSize.height-1-y));
+                }
             }
         }
+
+        // 门的碰撞点
+        this.doorsPos = [];
+        for (var i = 14; i < 36; i++) {
+            this.doorsPos.push({x: i, y: 22});
+        }
+
+        // console.log('空地=', this.emptyGrounds.length);
+        // console.log('精灵=', this.wallSprites.length);
     },
 
     // 随机隐藏道具
-    randomHideItem: function(count){
-        var indexs = utils.randomIndex(this.wallSprites.length, count);
+    randomHideItem: function(indexs){
+        // var indexs = utils.randomIndex(this.wallSprites.length, count);
         for (var i = 0; i < indexs.length; i++) {
             this.wallSprites[indexs[i]].visible = false;
             // this.wallSprites[i].opacity = 0;
@@ -76,24 +100,26 @@ cc.Class({
     },
 
     // 随机生成道具
-    randomGenerateItem: function(count){
-        var indexs = utils.randomIndex(this.emptyGrounds.length, count);
+    randomGenerateItem: function(indexs){
+        // var indexs = utils.randomIndex(this.emptyGrounds.length, count);
         for (var i = 0; i < indexs.length; i++) {
             var point = this.emptyGrounds[indexs[i]];
             // console.log(point);
             var item = cc.instantiate(this.randomItemPrefab);
-            item.getComponent(cc.Sprite).spriteFrame = AtlasStorage().randomItemSprite();
+            var itemId = i % 12 + 1;
+            item.getComponent(cc.Sprite).spriteFrame = AtlasStorage().getItemSprite(itemId);
             item.position = cc.p(point.x*this.tileSize.width, point.y*this.tileSize.height);
             this.randomItemNode.addChild(item);
         }
     },
 
     // 添加一个角色
-    addRole: function(node){
+    addRole: function(node, camp){
         this.roleNode.addChild(node);
         // 设置位置
-        var x = utils.random(1, 5);
-        node.position = cc.p(x*this.tileSize.width + this.tielSizeHalf.x, 2*this.tileSize.height + this.tielSizeHalf.y);
+        var bornPoints = this['bornPoints'+camp];
+        var pos = bornPoints.shift();
+        node.position = cc.p(pos.x*this.tileSize.width + this.tielSizeHalf.x, pos.y*this.tileSize.height + this.tielSizeHalf.y);
     },
 
     // 添加一个子弹
@@ -105,6 +131,12 @@ cc.Class({
         y = this.girdSize.height-1-y;
         if(x === 0 || y === 0 || x >= this.girdSize.width-1 || y >= this.girdSize.height-1)
             return true;
+        if(this.doorNode.active){
+            var arr = this.doorsPos.filter((m)=> m.x === x && m.y === y);
+            if(arr.length !== 0){
+                return true;
+            }
+        }
         return !!this.wallNode.getTileGIDAt(x, y);
     },
 

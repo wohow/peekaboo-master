@@ -6,10 +6,11 @@ var exp = module.exports;
 
 exp.uid = '';
 exp.nickname = '';
-exp.profession = 1;// 1.躲 2.找
+exp.camp = 0;// 0.躲 1.找
+exp.itemId = 1;
 
 exp.init = function (data) {
 	this.uid = data.uid;
 	this.nickname = data.nickname;
-	this.profession = data.profession;
+	this.camp = data.camp;
 };

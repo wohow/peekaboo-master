@@ -6,7 +6,6 @@ var utils = require('utils');
  * 图集
  */
 var instance = null;
-
 module.exports = function(){
     return instance;
 };
@@ -20,6 +19,7 @@ cc.Class({
     },
 
     onLoad: function () {
+        cc.game.addPersistRootNode(this.node);
         instance = this;
     },
 

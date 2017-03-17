@@ -22,6 +22,16 @@ cc.Class({
         this.nicknameTxt.string = nickname;
     },
 
+    // 隐藏名字
+    hiddenNickname: function() {
+        this.nicknameTxt.node.opacity = 0;
+    },
+
+    // 设置颜色
+    nicknameColor: function () {
+        this.nicknameTxt.node.color = cc.Color.GREEN;
+    },
+
     // 设置精灵
     setItemSpr: function (id) {
         this.itemSpr.spriteFrame = AtlasStorage().getItemSprite(id);
@@ -47,6 +57,7 @@ cc.Class({
             }}),
             Tween.to(self.itemSpr.node, 0.3, {scale: 1.2}),
             Tween.to(self.itemSpr.node, 0.2, {scale: 1}),
+            Tween.to(self.nicknameTxt.node, 0.5, {opacity: 255}),
             ], '', 'sequence');
         tl.play();
     }

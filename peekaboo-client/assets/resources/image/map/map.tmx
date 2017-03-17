@@ -5,17 +5,27 @@
  </tileset>
  <layer name="ground" width="50" height="28">
   <data encoding="base64" compression="zlib">
-   eJztmMEOABEMRPsF1v7/z+5VeiCtoR32MBcJ+jpMRBGRcohect3AURPU9/uRU6OzwcJxih8ejqoUXePJHLouVg7Nw87B5ocndzNyjPjYOXb7sXqdVRxPo97YDEtbWzYO735ojqj7NMORKQPY8yoidy1rWfdlerf3+ormyHTPd/cYMc/CgTzf6DyP9gOl6H9MpD6RNlrI
+   eJzdmFEOgCAMQzkBwv0v6xcJIbDNUdzGxxI1BPsoDdOcUsqXVA1cZeAoDjStdFL3lfHDK9espPvKO1Pj8K6T0xc9540vOgflxzMpa507HNba+n3DPZf4Yc0i4aTyEYEjmh9lcS3h4ObT6kCOp/aV1g8NI+r8/SsfKL2reaLkY8bSM3k7P7S+of2w6jd38iHRzI05lXOqt/LY26P7XYQ3Oz595bD0pBDvR/9n8JjzE+uJ4pb07Zq1pv7NIPTf/n0+ctxQLxwTWq0=
   </data>
  </layer>
  <layer name="wall" width="50" height="28">
   <data encoding="base64" compression="zlib">
-   eJztl0sOgCAMRDmD3v+u7hsLU/uPfUljotDpCAqsNQy1uA+hbR+Bhy6a00rb890huS30I8b/pIE8R+Y45VKGpE7kW/IYU67WrxpWNY4PHE4D/T938KHpT9tEhLWPrHWWIlnzq/vI7G9FpI+3sUfvSfNKqeJDS4V5NT5sc1Sgq48q580oMs+1GZqSfeJuP8FdtfzNR3bObjweyAvF
+   eJztVUkOgDAI5A/9/1+9eCIWZigtmHSSxlTZBllELrpjvOfPGOowsp4uK78C1PaO/4XaZOSyOLC5RmQzcsjaiNQMUs+IT6u2InUf6SMvRi8eD5aeflp+v2SRONC8av+MXkcejJ6FzP74yolX5zOb1TwicjPdEyeLB7ILTwKtKZm878TDuutvyHyuAMsD0ffmauYdlZnFbO2PCh7WXaNrf0R4dOyP1R0W1akGs5NO2rqIzYTdPllbSA3s5jHAp2eP2TVZ2MEjQ4bFnQMiDwGaEts=
   </data>
  </layer>
  <layer name="item" width="50" height="28">
   <data encoding="base64" compression="zlib">
-   eJztl9sKwCAIhmWndnz/191NgxG1mdnB8AMZyHLKv9IAlBZZaifQOTtDjCFh7YX0KQBjwW9N1hQapnYCCLbaCTDxrmNliHcyxKCQUw/KXnbXYM75Hv8pyTx1lOwd3JTSYrZG8WFw65CqCbceHDOoj6+7g1sDpm9Q7yKHNYrvDz2n+kHCzCgRjplQSccEnjH65OoVMYTq8L2ne7oNbrldAak=
+   eJztmAsLhCAQhOUeds///3ePIEFE3Zl0dTv6QIq0chzX1pw7mcFDqPfAM17E+77gtRaunZ+nCTN21glzKR7/Z1SOjKaOm1LbgIYfn8b7W5E0LKM6ApCLixXEC0s6SrA6JE3s3LqQ7UuwccF4sydu03sQnWh8h757Z3OOsTqsUIpxCSY+VqS8rSd7vxna3rBjkOqo5YmoH/etBN5b6VWfg/EC9WCEjloeInm56vDROYp2nDBzKmXm2pWOS0teiOhA9zklv0audzV698OKrp6kmv5R45FYhCPjz8z/FZKOXHtr+SHK7P11b37kiQQt
+  </data>
+ </layer>
+ <layer name="bornPoint1" width="50" height="28">
+  <data encoding="base64" compression="zlib">
+   eJzt0TENAAAMw7BiGH+wI9Grsp8ASAIAAAAAu65UejzpeZFWAUU=
+  </data>
+ </layer>
+ <layer name="bornPoint0" width="50" height="28">
+  <data encoding="base64" compression="zlib">
+   eJzt0zENAAAIBLHXgH+xrCiAhLTTGbgEAACYarGBGz4H4IsG9tYBRQ==
   </data>
  </layer>
 </map>

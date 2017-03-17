@@ -22,6 +22,11 @@ cc.Class({
         this.nicknameTxt.string = nickname;
     },
 
+    // 设置颜色
+    nicknameColor: function () {
+        this.nicknameTxt.node.color = cc.Color.GREEN;
+    },
+
     // setItemSpr: function (id) {  
     // },
 

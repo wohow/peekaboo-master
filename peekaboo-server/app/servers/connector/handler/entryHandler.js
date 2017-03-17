@@ -4,7 +4,7 @@ var crc = require('crc');
 var async = require('async');
 var code = require('../../../consts/code');
 var User = require('../../../domain/User');
-var UserManager = require('../../../domain/UserManager');
+var GameManager = require('../../../domain/GameManager');
 
 module.exports = function(app) {
   	return new Handler(app);
@@ -22,7 +22,7 @@ Handler.prototype.entry = function(msg, session, next) {
 
 	var nickname = msg.nickname;
 	// 是否重名
-	if(UserManager.nameIsExists(nickname)){
+	if(GameManager.nameIsExists(nickname)){
 		next(null, {code: code.FAIL, error: '名字已存在'});
 		return;
 	}
@@ -41,15 +41,25 @@ Handler.prototype.entry = function(msg, session, next) {
 
 		// 加入到设备管理中心
 		var user = new User({uid: uid, nickname: nickname, sid: self.sid});
-		UserManager.addUser(user);
-		user.profession = UserManager.users().length % 2;
+		GameManager.addUser(user);
+
+		var data = user.strip();
 
 		//
-		var syncChannel = self.app.get('channelService').getChannel('syncChannel', true);
-		syncChannel.add(uid, self.sid);
+		var channel = self.app.get('channelService').getChannel('syncChannel', true);
+		// 先同步其他玩家
+		channel.pushMessage('onEntryRoom', {user: data});
+		// 然后把玩家添加进来
+		channel.add(uid, self.sid);
 
 		// 
-		next(null, {code: code.OK, user: user.strip(), users: UserManager.users()});
+		next(null, {
+			code: code.OK, 
+			user: data, 
+			users: GameManager.users(),
+			captainUid: GameManager.captainUid,
+			isStart: GameManager.isStart
+		});
 	});
 };
 // 退出
@@ -57,8 +67,25 @@ function userLeave(app, session){
 	if(!session || !session.uid) {
 		return;
 	}
-	console.log(session.uid, ' 断开连接');
-	UserManager.userLeave(session.uid);
+	var user = GameManager.userLeave(session.uid);
+	if(!user){
+		return;
+	}
+
+	console.log(user.nickname + '(' + user.uid + ')', ' 断开连接');
+	var channel = app.get('channelService').getChannel('syncChannel', true);
+	channel.leave(user.uid, user.sid);
+
+	var msg = { uid: user.uid };
+
+	// 如果是队长 把队长移到下一个
+	if(user.uid === GameManager.captainUid){
+		GameManager.updateCaptainUid();
+		msg.newCaptainUid = GameManager.captainUid;
+	}
+
+	// 同步其他玩家 
+	channel.pushMessage('onUserLeave', msg);
 }
 
 /**

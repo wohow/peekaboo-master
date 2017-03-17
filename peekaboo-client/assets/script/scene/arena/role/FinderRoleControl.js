@@ -2,11 +2,12 @@
 var utils = require('utils');
 var net = require('net');
 
-var moveSpeed = 2;// 移动速度
+var moveSpeed = 4;// 移动速度
+var direction = cc.p(0,0);// 方向
+var lastDirection = cc.p(0,0);// 上一次的方向
 var indicatorDir;
 var mouseClickInterval = 400;// 鼠标点击间隔(毫秒)
 var mouseClickTime = 0;// 鼠标点击时间
-var lastPosition = {x: 0, y: 0};// 上次位置 用于同步使用
 
 /**
  * 角色控制器 - 找
@@ -20,14 +21,10 @@ cc.Class({
 
     onLoad: function () {
         this.roleClass = this.node.getComponent('binRole');
-        this.direction = cc.p(0,0);
         this.indicatorPos = 0; // 指示器方向的位置
 
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
-
-        // 开启定时向服务器提交自己的位置
-        this.schedule(this.commitPosition, 0.05);
     },
 
     start: function(){
@@ -46,9 +43,6 @@ cc.Class({
             var startPos = {x: this.node.x, y: this.node.y};
             var targetPos = {x: this.indicatorPos.x, y: this.indicatorPos.y};
             net.send('connector.syncHandler.applyFire', {startPos: startPos, targetPos: targetPos});
-            // , function (data) {
-            //     this.roleClass.fire(data.startPos, data.targetPos);
-            // }
         }
     },
 
@@ -68,34 +62,35 @@ cc.Class({
         switch(event.keyCode) {
             case cc.KEY.a:
             case cc.KEY.left: // 左
-                this.direction.x = -1 * speed;
+                direction.x = -1 * speed;
                 break;
             case cc.KEY.d:
             case cc.KEY.right:// 右
-                this.direction.x = 1 * speed;
+                direction.x = 1 * speed;
                 break;
             case cc.KEY.w:
             case cc.KEY.up: // 上
-                this.direction.y = 1 * speed;
+                direction.y = 1 * speed;
                 break;
             case cc.KEY.s:
-            case cc.KEY.down:
-                this.direction.y = -1 * speed;
+            case cc.KEY.down:// 下
+                direction.y = -1 * speed;
                 break;
         }
-        this.roleClass.direction = this.direction;
+        this.commitDirection();
     },
 
-    // 定时提交自己的坐标
-    commitPosition: function () {
-        // if(lastPosition.x !== this.node.x || lastPosition.y !== this.node.y){
-        // }
-            var position = {x: this.node.x, y: this.node.y};
-            net.send('connector.syncHandler.commitPosition', {position: position});
+    // 提交自己的方向
+    commitDirection: function() {
+        if(lastDirection.x === direction.x && lastDirection.y === direction.y){
+            return;
+        }
+        lastDirection = {x: direction.x, y: direction.y};
+        var position = {x: this.node.x, y: this.node.y};
+        net.send('connector.syncHandler.commitDirection', {direction: lastDirection, position: position});
     },
 
     update: function (dt) {
-        this.roleClass.updateData(dt);
         // 刷新指示器
         indicatorDir = 90 - utils.rotation(this.node.position, this.indicatorPos);
         this.roleClass.entity.updateIndicator(indicatorDir);

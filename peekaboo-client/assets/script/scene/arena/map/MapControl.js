@@ -22,7 +22,7 @@ cc.Class({
     onLoad: function () {
         this.mapInfo = this.node.getComponent('MapInfo');
         this.myRoleControl = null;// 
-        this.professions = [
+        this.camps = [
         {
             Prefab: this.dodgeRolePrefab,
             ClassName: 'DodgeRole',
@@ -43,12 +43,17 @@ cc.Class({
         this.node.off(cc.Node.EventType.MOUSE_MOVE, this.onMouseMove, this);
     },
 
+    // 打开和关闭门
+    openDoor: function (isOpen) {
+        this.mapInfo.doorNode.active = isOpen;
+    },
+
     // 初始化地图
     init: function(){
         // 先随机隐藏 地面物品
-        this.mapInfo.randomHideItem(this.hideItemCount);
+        this.mapInfo.randomHideItem(GameData.hideItemIndexs);
         // 随机生成物品
-        this.mapInfo.randomGenerateItem(this.generateItemCount);
+        this.mapInfo.randomGenerateItem(GameData.generateItemIndexs);
         // 初始化玩家
         this.initAllRole();
     },
@@ -60,15 +65,16 @@ cc.Class({
             var user = GameData.players[i];
             var role = this.createrRole(user);
             if(user.uid === Player.uid){
-                var control = this.professions[user.profession].RoleControl;
+                var control = this.camps[user.camp].RoleControl;
                 this.myRoleControl = role.node.addComponent(control);
+                role.nicknameColor();
             }
             this.roles.push(role);
         }
     },
 
     createrRole: function (data) {
-        var prof = this.professions[data.profession];
+        var prof = this.camps[data.camp];
         // 创建角色空节点
         var roleNode = new cc.Node('roleNode'+data.uid);
         // 添加角色统一控制器
@@ -80,14 +86,31 @@ cc.Class({
         // 完事
         bin.init(data, entity);
         // 加入地图
-        this.mapInfo.addRole(roleNode);
-        roleNode.zIndex = data.profession;
+        this.mapInfo.addRole(roleNode, data.camp);
+        roleNode.zIndex = data.camp;
+        if(data.camp === 0){
+            entity.setItemSpr(data.itemId);
+        }
+        if(Player.camp === 1 && data.camp === 0){// 如果自己是找 并且 对方是藏 那么就要把它名字隐藏了
+            entity.hiddenNickname();
+        }
         return bin;
     },
 
     getRole: function(uid){
         var arr = this.roles.filter((m)=> m.uid === uid);
         return arr.length === 0 ? null : arr[0];
+    },
+
+    removeRole: function (uid) {
+        for (var i = this.roles.length - 1; i >= 0; i--) {
+            var role = this.roles[i];
+            if(role.uid === uid){
+                role.node.removeFromParent();
+                this.roles.splice(i, 1);
+                return;
+            }
+        }
     },
 
     onMouseDown: function (event) {
@@ -102,14 +125,16 @@ cc.Class({
         }
     },
 
-        // 同步坐标
-    syncPosition: function(data){
-        if(data.uid === Player.uid)
-            return;
+    // 同步方向
+    syncDirection: function(data) {
         var role = this.getRole(data.uid);
         if(!role)
             return;
-        role.setDirection(data.position);
+        role.direction = data.direction;
+        if(data.direction.x === 0 && data.direction.y === 0){
+            role.node.x = data.position.x;
+            role.node.y = data.position.y;
+        }
     },
 
     // 同步开火

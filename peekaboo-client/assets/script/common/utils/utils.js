@@ -6,6 +6,15 @@
 var exp = module.exports;
 
 /**
+ * 判断对象是否空对象{}
+ */
+exp.isEmptyObject = function(obj) {
+    for (var k in obj)
+        return false;
+    return true;
+};
+
+/**
  * 随机一个整数 包括min和max
  * @param  {[Number]} min [最小值]
  * @param  {[Number]} max [最大值]
