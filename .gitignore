@@ -4,4 +4,3 @@ local/
 packages/
 temp/
 logs/
-*.meta
