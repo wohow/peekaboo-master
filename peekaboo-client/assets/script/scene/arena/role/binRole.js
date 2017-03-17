@@ -24,11 +24,6 @@ cc.Class({
         this.uid = data.uid;
         this.entity = entity;
         this.entity.setNickname(data.nickname);
-        if(data.profession === 0){
-            this.entity.setItemSpr(5);
-        } else {
-            this.entity.isShowIndicator(true);
-        }
     },
 
     // 设置方向
@@ -57,10 +52,10 @@ cc.Class({
         var bin = prefab.getComponent('binBullet');
         bin.move(startPos, targetPos);
     },
-
+ 
     playAnim: function(animName){
         var anim = this.entity.animation;
-        if(this.entity.animation === null)
+        if(!this.entity.animation)
             return;
         var animState = anim.getAnimationState(animName);
         if(!animState.isPlaying){
@@ -76,11 +71,11 @@ cc.Class({
         var pos;
         if(isNoCheckCollide){
             pos = cc.p(this.node.x+direction.x, this.node.y+direction.y);
+            // Tween.to(this.node, 0.05, {x: pos.x, y: pos.y});
         } else {
             pos = MapInfo().isWallCollide(this.node.position, direction);
         }
-
-        Tween.to(this.node, 0.02, {x: pos.x, y: pos.y});
+        this.node.position = pos;
     },
 
     // ----------------------------------------------------------------------
@@ -108,7 +103,9 @@ cc.Class({
     setDirection: function (position) {
         if(this.entity === null || this.isWasfound)
             return;
-        this.direction = cc.p(position.x-this.node.x, position.y-this.node.y);
+
+        this.direction = cc.p(Math.min(position.x-this.node.x, 3), Math.min(position.y-this.node.y, 3));
+        // this.direction = cc.p(position.x-this.node.x, position.y-this.node.y);
 
         if(this.isPlayFireAnim){
             var animState = this.entity.animation.getAnimationState('role_attack');

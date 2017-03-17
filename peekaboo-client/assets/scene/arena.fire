@@ -233,7 +233,7 @@
     "_globalZOrder": 0,
     "_tag": -1,
     "_opacityModifyRGB": false,
-    "_id": "6e4aa682bhMjbDG7lEeSu/k",
+    "_id": "5baa7FvoQxAirCykn2WAY+T",
     "_active": true,
     "_components": [
       {
@@ -294,7 +294,7 @@
     "_globalZOrder": 0,
     "_tag": -1,
     "_opacityModifyRGB": false,
-    "_id": "fda96mUbuxOGYM2NMoAPwBc",
+    "_id": "08c762XKctPfJ8W9eJk3/wR",
     "_active": true,
     "_components": [
       {
@@ -355,7 +355,7 @@
     "_globalZOrder": 0,
     "_tag": -1,
     "_opacityModifyRGB": false,
-    "_id": "c2248x2AAtL4r6S9VX/JfO1",
+    "_id": "81d9da0IYJH5KIztdEEErUW",
     "_active": true,
     "_components": [
       {
@@ -695,7 +695,7 @@
     },
     "_enabled": true,
     "_tmxFile": {
-      "__uuid__": "373c9004-6cb3-493b-a402-8393dd06cca9"
+      "__uuid__": "13215e79-9205-436b-9c4b-93e9b82e84e1"
     }
   },
   {
@@ -1166,7 +1166,7 @@
     },
     "_enabled": true,
     "itemAtlas": {
-      "__uuid__": "c77aa1b4-79da-4397-9b77-33895310a9a3"
+      "__uuid__": "7125b2e6-c5e4-4255-8cde-bac3f8bb4654"
     },
     "bulletPrefab": {
       "__uuid__": "9ab8113d-3bad-4949-920f-cce3bf708576"

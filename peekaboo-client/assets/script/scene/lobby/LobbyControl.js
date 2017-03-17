@@ -1,6 +1,7 @@
 
 var SceneManager = require('SceneManager');
 var net = require('net');
+var consts = require('consts');
 var Player = require('Player');
 var GameData = require('GameData');
 
@@ -21,13 +22,14 @@ cc.Class({
 
         SceneManager.load(function(cb){
 
-            net.connect({host: '192.168.1.103', port: 3010}, function(){
+            net.connect(consts.connectorAddress, function(){
                 net.send('connector.entryHandler.entry', {nickname: nickname}, function(data){
                     if(data.code === 200){
                         Player.init(data.user);
                         GameData.players = data.users;
                         setTimeout(function(){
-                            cb('room');
+                            // cb('room');
+                            cb('arena');
                         }, 100);
                     } else {
                         console.log(data.error);

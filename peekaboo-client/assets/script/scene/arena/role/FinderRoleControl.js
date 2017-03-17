@@ -6,6 +6,7 @@ var moveSpeed = 2;// 移动速度
 var indicatorDir;
 var mouseClickInterval = 400;// 鼠标点击间隔(毫秒)
 var mouseClickTime = 0;// 鼠标点击时间
+var lastPosition = {x: 0, y: 0};// 上次位置 用于同步使用
 
 /**
  * 角色控制器 - 找
@@ -27,6 +28,10 @@ cc.Class({
 
         // 开启定时向服务器提交自己的位置
         this.schedule(this.commitPosition, 0.05);
+    },
+
+    start: function(){
+        this.roleClass.entity.isShowIndicator(true);
     },
 
     onDestroy () {
@@ -83,8 +88,10 @@ cc.Class({
 
     // 定时提交自己的坐标
     commitPosition: function () {
-        var p = {x: this.node.x, y: this.node.y}
-        net.send('connector.syncHandler.commitPosition', {position: p});
+        // if(lastPosition.x !== this.node.x || lastPosition.y !== this.node.y){
+        // }
+            var position = {x: this.node.x, y: this.node.y};
+            net.send('connector.syncHandler.commitPosition', {position: position});
     },
 
     update: function (dt) {
