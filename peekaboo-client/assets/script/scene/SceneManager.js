@@ -1,4 +1,7 @@
 
+
+var instance = null;
+
 /**
  * 场景管理
  */
@@ -12,6 +15,7 @@ cc.Class({
     },
 
     onLoad: function(){
+        instance = this;
         cc.game.addPersistRootNode(this.node);
     },
 
@@ -32,6 +36,10 @@ cc.Class({
 
 
 var exp = module.exports;
+
+function getInstance(){
+    return instance;
+}
 
 /**
  * 加载一个场景
@@ -55,13 +63,11 @@ exp.load = function (sceneNanme) {
 
 // 显示加载进度条 - node形式实现
 function showLoadingDisplay(){
-    var instance = cc.find('scene-loading').getComponent('SceneManager');
+    var instance = getInstance();
 
     instance.open(true);
 
     cc.loader.onProgress = function (completedCount, totalCount, item) {
-        // console.log(completedCount, totalCount);
-        // var percent = 100 * completedCount / totalCount;
         instance.setPercent(completedCount / totalCount);
     };
 

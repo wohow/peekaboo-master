@@ -1,6 +1,7 @@
 'use strict';
 
 var GameManager = require('../../../domain/GameManager');
+var LockStep = require('../../../domain/LockStep');
 
 module.exports = function(app) {
   	return new Handler(app);
@@ -50,6 +51,14 @@ Handler.prototype.selectCamp = function(msg, session, next) {
 };
 
 /**
+ * 发送聊天信息
+ */
+Handler.prototype.sendChat = function(msg, session, next) {
+	var user = GameManager.getUser(session.uid);
+	this.syncChannel.pushMessage('onChatMsg', {id: msg.id, nickname: user.nickname, content: msg.content});
+};
+
+/**
  * 开始游戏
  */
 Handler.prototype.startGame = function(msg, session, next) {
@@ -72,20 +81,33 @@ Handler.prototype.startGame = function(msg, session, next) {
 	var hideItemIndexs = randomIndex(137, 20);
 	var generateItemIndexs = randomIndex(857, 20);
 
-	var dodges = [];
+	// 创建游戏专用通道
+	var channel = this.app.get('channelService').createChannel('gameChannel');
+
+	var gamePlayers = [];
 	var users = GameManager.getUsers();
+	var no = 0;
 	for(var key in users) {
 		var user = users[key];
-		if(user.camp === 0){
-			user.itemId = Math.floor(Math.random()*12) + 1;
-			dodges.push({uid: user.uid, itemId: user.itemId});
+		if(user.isInGame){
+			continue;
 		}
+		user.itemId = (user.camp === 0) ? (Math.floor(Math.random()*12) + 1) : 0;
+		user.isInGame = true;
+
+		channel.add(user.uid, user.sid);
+		gamePlayers.push({no: no, uid: user.uid, camp: user.camp, itemId: user.itemId});
+		++no;
 	}
+	// 开启回合
+	LockStep.startTurn(channel);
 
 	// 同步其他玩家
 	this.syncChannel.pushMessage('onStartGame', {
 		hideItemIndexs: hideItemIndexs,
 		generateItemIndexs: generateItemIndexs,
-		dodges: dodges
+		gamePlayers: gamePlayers,
+		prepareTime: LockStep.PREPARE_TIME,
+		searchTime: LockStep.SEARCH_TIME
 	});
 };

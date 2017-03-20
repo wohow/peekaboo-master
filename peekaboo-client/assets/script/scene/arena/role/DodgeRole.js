@@ -2,6 +2,10 @@
 var AtlasStorage = require('AtlasStorage');
 var Tween = require('TweenLite');
 var Timeline = require('TimelineLite');
+var net = require('net');
+var EventDispatcher = require('EventDispatcher');
+var EventType = require('EventType');
+var Player = require('Player');
 
 /**
  * 躲 角色
@@ -16,6 +20,7 @@ cc.Class({
 
     onLoad: function(){
         this.animation = null;
+        this.isDeath = false;
     },
 
     setNickname: function(nickname){
@@ -40,11 +45,17 @@ cc.Class({
     // 被发现
     wasfound: function (argument) {
         var role = this.node.parent.getComponent('binRole');
-        if(role.isWasfound){
+        if(role.uid === Player.uid){
+            net.send('connector.gameHandler.wasfound', {});
+        }
+    },
+
+    // 死亡
+    death: function () {
+        if(this.isDeath){
             return;
         }
-        // console.log(this.nicknameTxt.string, ' 被发现');
-        role.isWasfound = true;
+        this.isDeath = true;
         // 把碰撞关掉
         var collider = this.node.getComponent(cc.BoxCollider);
         collider.enabled = false;

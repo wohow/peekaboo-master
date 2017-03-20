@@ -25,7 +25,10 @@ cc.Class({
     // 点击开始按钮
     onClickStart: function(){
         var nickname = this.nicknameEditbox.string;
-
+        if(nickname === ''){
+            Tip().showMessage('名字不能为空');
+            return;
+        }
         net.send('connector.entryHandler.entry', {nickname: nickname}, function(data){
             if(data.code === 200){
                 Player.init(data.user);
@@ -33,7 +36,6 @@ cc.Class({
                 GameData.captainUid = data.captainUid;
                 GameData.isStart = data.isStart;
                 SceneManager.load('room');
-                // SceneManager.load('arena');
             } else {
                 Tip().showMessage(data.error);
             }

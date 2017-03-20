@@ -5,6 +5,7 @@ var async = require('async');
 var code = require('../../../consts/code');
 var User = require('../../../domain/User');
 var GameManager = require('../../../domain/GameManager');
+var LockStep = require('../../../domain/LockStep');
 
 module.exports = function(app) {
   	return new Handler(app);
@@ -75,6 +76,14 @@ function userLeave(app, session){
 	console.log(user.nickname + '(' + user.uid + ')', ' 断开连接');
 	var channel = app.get('channelService').getChannel('syncChannel', true);
 	channel.leave(user.uid, user.sid);
+
+	// 游戏通道
+	var lastUid = LockStep.leave(user.uid, user.sid);
+	if(lastUid){
+		GameManager.isStart = false;
+		let u = GameManager.getUser(lastUid);
+		LockStep.stopTurn(u ? u.camp : null);
+	}
 
 	var msg = { uid: user.uid };
 

@@ -11,11 +11,14 @@ cc.Class({
         this.isCaptainNode.active = false;
     },
 
-    init: function (player, isMe) {
+    init: function (player) {
         this.uid = player.uid;
         this.camp = player.camp;
         this.nicknameTxt.string = player.nickname;
-        this.nicknameTxt.node.color = isMe ? cc.Color.GREEN : cc.Color.WHITE;
+    },
+
+    setColor: function(color) {
+        this.nicknameTxt.node.color = color;
     },
 
     setCaptain: function(isCaptain){

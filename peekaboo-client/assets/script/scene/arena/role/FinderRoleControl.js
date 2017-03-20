@@ -1,13 +1,13 @@
 
 var utils = require('utils');
 var net = require('net');
+var consts = require('consts');
 
-var moveSpeed = 4;// 移动速度
+const moveSpeed = 16;// 移动速度
 var direction = cc.p(0,0);// 方向
-var lastDirection = cc.p(0,0);// 上一次的方向
+var lastDirection = {};// 上一次的方向
+
 var indicatorDir;
-var mouseClickInterval = 400;// 鼠标点击间隔(毫秒)
-var mouseClickTime = 0;// 鼠标点击时间
 
 /**
  * 角色控制器 - 找
@@ -21,29 +21,32 @@ cc.Class({
 
     onLoad: function () {
         this.roleClass = this.node.getComponent('binRole');
-        this.indicatorPos = 0; // 指示器方向的位置
+    },
 
+    init: function(){
+        direction = cc.p(0,0);
+        lastDirection = {};
+        this.indicatorPos = 0; // 指示器方向的位置
+        this.roleClass.entity.isShowIndicator(true);
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
+        this.schedule(this.commitMove, 0.15);
     },
 
-    start: function(){
-        this.roleClass.entity.isShowIndicator(true);
-    },
-
-    onDestroy () {
+    stopAllEvent: function() {
+        this.unschedule(this.commitMove);
         cc.systemEvent.off(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
         cc.systemEvent.off(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
     },
 
     onMouseDown: function (event) {
-        var now = new Date().getTime();
-        if(now - mouseClickTime >= mouseClickInterval){
-            mouseClickTime = now;
-            var startPos = {x: this.node.x, y: this.node.y};
-            var targetPos = {x: this.indicatorPos.x, y: this.indicatorPos.y};
-            net.send('connector.syncHandler.applyFire', {startPos: startPos, targetPos: targetPos});
-        }
+        if(this.roleClass.entity.bulletIsEmpty())
+            return;// 子弹空了 就直接返回
+        if(!this.roleClass.entity.isCanFire)
+            return;// 换弹中
+        var startPos = {x: this.node.x, y: this.node.y};
+        var targetPos = {x: this.indicatorPos.x, y: this.indicatorPos.y};
+        net.send('connector.gameHandler.applyFire', {startPos: startPos, targetPos: targetPos});
     },
 
     onMouseMove: function (event) {
@@ -77,17 +80,24 @@ cc.Class({
                 direction.y = -1 * speed;
                 break;
         }
-        this.commitDirection();
     },
 
-    // 提交自己的方向
-    commitDirection: function() {
-        if(lastDirection.x === direction.x && lastDirection.y === direction.y){
+    // 提交移动指令
+    commitMove: function () {
+        if(direction.x === 0 && direction.y === 0 && lastDirection.x === 0 && lastDirection.y === 0)
             return;
-        }
+        if(this.roleClass.isPlayFireAnim)
+            return;
+        if(consts.sIsRC)
+            return;
+        consts.sIsRC = true;
+
         lastDirection = {x: direction.x, y: direction.y};
-        var position = {x: this.node.x, y: this.node.y};
-        net.send('connector.syncHandler.commitDirection', {direction: lastDirection, position: position});
+        // 提交信息
+        net.send('connector.gameHandler.commitInstructions', {
+            direction: lastDirection, 
+            position: {x: this.roleClass.expectPosition.x, y: this.roleClass.expectPosition.y}
+        });
     },
 
     update: function (dt) {

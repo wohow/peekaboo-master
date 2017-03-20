@@ -15,3 +15,6 @@ exp.connectorAddress =
 	port: 8000,
 	log: true
 };
+
+// 服务器是否收到提交
+exp.sIsRC = false;

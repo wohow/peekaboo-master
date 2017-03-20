@@ -72,9 +72,13 @@ cc.Class({
                 this.emptyGrounds.push(cc.p(x, this.girdSize.height-1-y));
                 // 出生点
                 if(this.bornPointNode0.getTileGIDAt(x, y)){
+                    let tile = this.bornPointNode0.getTileAt(x, y);
+                    tile.visible = false;
                     this.bornPoints0.push(cc.p(x, this.girdSize.height-1-y));
                 }
                 if(this.bornPointNode1.getTileGIDAt(x, y)){
+                    let tile = this.bornPointNode1.getTileAt(x, y);
+                    tile.visible = false;
                     this.bornPoints1.push(cc.p(x, this.girdSize.height-1-y));
                 }
             }
@@ -114,11 +118,11 @@ cc.Class({
     },
 
     // 添加一个角色
-    addRole: function(node, camp){
+    addRole: function(no, node, camp){
         this.roleNode.addChild(node);
         // 设置位置
         var bornPoints = this['bornPoints'+camp];
-        var pos = bornPoints.shift();
+        var pos = bornPoints[no];
         node.position = cc.p(pos.x*this.tileSize.width + this.tielSizeHalf.x, pos.y*this.tileSize.height + this.tielSizeHalf.y);
     },
 
@@ -127,6 +131,7 @@ cc.Class({
         this.bulletNode.addChild(node);
     },
 
+    // 检查是否碰撞
     isCollide: function(x, y){
         y = this.girdSize.height-1-y;
         if(x === 0 || y === 0 || x >= this.girdSize.width-1 || y >= this.girdSize.height-1)

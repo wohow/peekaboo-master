@@ -17,11 +17,10 @@ cc.Class({
         roomRolePrefab: cc.Prefab,
 
         contents: [cc.Node],
-        campBtns: [cc.Button],
+        inGameContent: cc.Node,
         
         startBtn: cc.Node,
 
-        startBtnTxt: cc.Label,
         explainTxt: cc.Label
     },
 
@@ -31,24 +30,31 @@ cc.Class({
         var self = this;
         // 进入房间
         self.entryroomCallback = function (data) {
-            GameData.players.push(data.user);
             self.addRole(data.user);
         };
         EventDispatcher.listen(EventType.SYNC_ENTRYROOM, self.entryroomCallback);
+        // 有玩家从游戏界面进入房间
+        self.exitgameCallback = function (data) {
+            var player = GameData.getPlayer(data.uid);
+            self.setCamp(data.uid, player.camp);
+        };
+        EventDispatcher.listen(EventType.SYNC_EXITGAME, self.exitgameCallback);
         // 选择阵营
         self.selectcampCallback = function(data){
-            if(Player.uid !== data.uid){
-                self.changeCamp(data.uid, data.camp);
-            }
+            self.setCamp(data.uid, data.camp);
         };
         EventDispatcher.listen(EventType.SYNC_SELECTCAMP, self.selectcampCallback);
+        // 游戏结束了
+        self.gameoverCallback = function(data){
+            self.explainTxt.string = '请选择一个你想玩的'
+        };
+        EventDispatcher.listen(EventType.SYNC_GAMEOVER, self.gameoverCallback);
         // 玩家离线
         self.userleaveCallback = function(data){
-            GameData.removePlayer(data.uid);
             var role = self.getRole(data.uid);
             role.node.removeFromParent();
+            role.destroy();
             if(data.newCaptainUid){
-                GameData.captainUid = data.newCaptainUid;
                 self.updateCaptain();
             }
         };
@@ -59,6 +65,8 @@ cc.Class({
         EventDispatcher.remove(EventType.SYNC_ENTRYROOM, this.entryroomCallback);
         EventDispatcher.remove(EventType.SYNC_SELECTCAMP, this.selectcampCallback);
         EventDispatcher.remove(EventType.SYNC_USERLEAVE, this.userleaveCallback);
+        EventDispatcher.remove(EventType.SYNC_GAMEOVER, this.gameoverCallback);
+        EventDispatcher.remove(EventType.SYNC_EXITGAME, this.exitgameCallback);
     },
 
     start: function () {
@@ -68,23 +76,13 @@ cc.Class({
             this.addRole(GameData.players[i]);
         }
         
-        // 如果游戏开始了 就把按钮全部不可点击
-        for (var i = this.campBtns.length - 1; i >= 0; i--) {
-            this.campBtns[i].interactable = !GameData.isStart;
-        }
-        // 
-        this.startBtnTxt.string = GameData.isStart ? '观  战' : '开  始';
         if(GameData.isStart){
-            this.explainTxt.string = '游戏已经开始，请等待下一局或者观战'
+            this.explainTxt.string = '游戏已经开始，请等待下一局'
         } else {
             this.explainTxt.string = '请选择一个你想玩的'
         }
         // 刷新队长
         this.updateCaptain();
-        // 如果游戏已经开了 
-        if(GameData.isStart){
-            this.startBtn.active = true;
-        }
         // 这里做一次rtt
         net.send('connector.entryHandler.rtt', {time: new Date().getTime()}, function(data){
             var now = new Date().getTime();
@@ -95,8 +93,15 @@ cc.Class({
     addRole: function(player){
         var prefab = cc.instantiate(this.roomRolePrefab);
         var bin = prefab.getComponent('binRoomRole');
-        bin.init(player, player.uid === Player.uid);
-        prefab.parent = this.contents[player.camp];
+        bin.init(player);
+        if(player.isInGame){
+            prefab.parent = this.inGameContent;
+        } else {
+            prefab.parent = this.contents[player.camp];
+        }
+        if(player.uid === Player.uid){
+            bin.setColor(cc.Color.GREEN);
+        }
         this.roles.push(bin);
     },
 
@@ -115,15 +120,12 @@ cc.Class({
     },
 
     // 改变阵营
-    changeCamp: function(uid, camp){
+    setCamp: function(uid, camp){
         var role = this.getRole(uid);
         role.node.removeFromParent();
         role.camp = camp;
         role.node.position = cc.p(0,0);
         role.node.parent = this.contents[camp];
-        
-        var player = GameData.getPlayer(uid);
-        player.camp = camp;
     },
 
     // 点击选择阵营
@@ -132,10 +134,8 @@ cc.Class({
         if(curSelectCamp === camp)
             return;
         curSelectCamp = camp;
-        var self = this;
         net.send('connector.roomHandler.selectCamp', {camp: camp}, function(data) {
             Player.camp = data.camp;
-            self.changeCamp(Player.uid, data.camp);
         });
     },
 

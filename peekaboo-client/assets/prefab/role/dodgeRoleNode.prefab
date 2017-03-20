@@ -93,7 +93,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 34,
+      "width": 150,
       "height": 20
     },
     "_children": [],
@@ -139,15 +139,15 @@
     "_actualFontSize": 16,
     "_fontSize": 16,
     "_lineHeight": 20,
-    "_enableWrapText": true,
+    "_enableWrapText": false,
     "_N$file": {
       "__uuid__": "b6eacd9c-87bb-4829-91de-d34646d9594f"
     },
     "_isSystemFontUsed": false,
-    "_N$string": "角色",
+    "_N$string": "角色角色角色角色",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$overflow": 0
+    "_N$overflow": 1
   },
   {
     "__type__": "cc.LabelOutline",

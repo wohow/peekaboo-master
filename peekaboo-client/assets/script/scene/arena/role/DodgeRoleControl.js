@@ -1,10 +1,12 @@
 
 var utils = require('utils');
 var net = require('net');
+var consts = require('consts');
 
-var moveSpeed = 6;// 移动速度
+var moveSpeed = 8;// 移动速度
 var direction = cc.p(0,0);// 方向
-var lastDirection = cc.p(0,0);// 上一次的方向
+var lastDirection = {};// 上一次的方向
+
 
 /**
  * 角色控制器 - 躲
@@ -18,16 +20,18 @@ cc.Class({
 
     onLoad: function () {
         this.roleClass = this.node.getComponent('binRole');
+    },
 
+    init: function(){
+        direction = cc.p(0,0);
+        lastDirection = {};
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
+        this.schedule(this.commitMove, 0.06);
     },
 
-    start: function(){
-        // this.roleClass.entity.setItemSpr(utils.random(1, 12));
-    },
-
-    onDestroy () {
+    stopAllEvent: function() {
+        this.unschedule(this.commitMove);
         cc.systemEvent.off(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
         cc.systemEvent.off(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
     },
@@ -38,25 +42,11 @@ cc.Class({
     },
 
     onKeyDown: function(event){
-        if(event.keyCode === cc.KEY.shift){
-            moveSpeed = 1;
-            direction.x = utils.cTo1(direction.x) * moveSpeed;
-            direction.y = utils.cTo1(direction.y) * moveSpeed;
-            this.commitDirection();
-        } else {
-            this.move(event, moveSpeed);
-        }
+        this.move(event, moveSpeed);
     },
 
     onKeyUp: function(event){
-        if(event.keyCode === cc.KEY.shift){
-            moveSpeed = 6;
-            direction.x = utils.cTo1(direction.x) * moveSpeed;
-            direction.y = utils.cTo1(direction.y) * moveSpeed;
-            this.commitDirection();
-        } else {
-            this.move(event, 0);
-        }
+        this.move(event, 0);
     },
 
     move: function(event, speed){
@@ -78,17 +68,24 @@ cc.Class({
                 direction.y = -1 * speed;
                 break;
         }
-        this.commitDirection();
     },
 
-    // 提交自己的方向
-    commitDirection: function() {
-        if(lastDirection.x === direction.x && lastDirection.y === direction.y){
+    // 提交移动指令
+    commitMove: function () {
+        if(direction.x === 0 && direction.y === 0 && lastDirection.x === 0 && lastDirection.y === 0){
             return;
         }
+
+        if(consts.sIsRC)
+            return;
+        consts.sIsRC = true;
+
         lastDirection = {x: direction.x, y: direction.y};
-        var position = {x: this.node.x, y: this.node.y};
-        net.send('connector.syncHandler.commitDirection', {direction: lastDirection, position: position});
+        // 提交信息
+        net.send('connector.gameHandler.commitInstructions', {
+            direction: lastDirection, 
+            position: {x: this.roleClass.expectPosition.x, y: this.roleClass.expectPosition.y}
+        });
     },
 
     update: function (dt) {

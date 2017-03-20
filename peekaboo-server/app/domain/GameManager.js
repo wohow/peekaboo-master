@@ -41,17 +41,17 @@ exp.users = function(){
 
 // 获取对应阵营个数
 exp.getCampCount = function () {
-	var dodge = 0, finder = 0, watch = 0;
+	var dodge = 0, finder = 0;
 	for (var k in users) {
+		if(users[k].isInGame)
+			continue;
 		if(users[k].camp === 0){
 			++dodge;
 		} else if(users[k].camp === 1){
 			++finder;
-		} else {
-			++watch;
 		}
 	}
-	return [dodge, finder, watch];
+	return [dodge, finder];
 };
 
 // 添加一个user
@@ -81,6 +81,33 @@ exp.updateCaptainUid = function () {
 		exp.captainUid = users[k].uid;
 		break;
 	}
+};
+
+// 获取当前已经找到的个数
+exp.getCurfoundCount = function () {
+	var count = 0;
+	for (var k in users) {
+		var user = users[k];
+		if(!user.isInGame)
+			continue;
+		if(user.camp === 0 && user.itemId === 0){
+			++count;
+		}
+	}
+	return count;
+};
+
+// 判断是否全部找完了
+exp.isAllFound = function () {
+	for (var k in users) {
+		var user = users[k];
+		if(!user.isInGame)
+			continue;
+		if(user.camp === 0 && user.itemId !== 0){
+			return false;
+		}
+	}
+	return true;
 };
 
 // 玩家离线

@@ -104,5 +104,7 @@
 
   "replaceConsole": true,
 
-  "lineDebug": false
+  "lineDebug": false,
+
+  "rawMessage": true
 }
