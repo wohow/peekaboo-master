@@ -1,4 +1,6 @@
+
 var pomelo = require('pomelo');
+var test = require('./app/domain/test');
 
 /**
  * Init app for client.
@@ -8,13 +10,16 @@ app.set('name', 'peekaboo-server');
 
 // app configuration
 app.configure('production|development', 'connector', function(){
-  app.set('connectorConfig',
+  	app.set('connectorConfig',
     {
       connector : pomelo.connectors.hybridconnector,
       // heartbeat : 3,
       useDict : true,
       useProtobuf : true
     });
+
+  	var channel = app.get('channelService').createChannel('gameChannel');
+  	test.startup(channel, 20);
 });
 
 // start app
