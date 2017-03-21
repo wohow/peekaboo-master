@@ -86,7 +86,11 @@ Handler.prototype.startGame = function(msg, session, next) {
 
 	var gamePlayers = [];
 	var users = GameManager.getUsers();
-	var no = 0;
+	var idx0 = 0;
+	var idx1 = 0;
+	var pos0 = [{x:13, y:13},{x:13, y:8},{x:16, y:8},{x:19, y:13},{x:19, y:8},{x:22, y:13},{x:22, y:8},{x:25, y:13},{x:25, y:8},{x:28, y:13},{x:28, y:8},{x:31, y:13},{x:31, y:8},{x:34, y:13},{x:34, y:8},{x:37, y:13},{x:37, y:8}];
+	var pos1 = [{x:16, y:3},{x:17, y:1},{x:18, y:3},{x:19, y:1},{x:20, y:3},{x:21, y:1},{x:22, y:3},{x:23, y:1},{x:24, y:3},{x:25, y:1},{x:26, y:3},{x:27, y:1},{x:28, y:3},{x:29, y:1},{x:30, y:3},{x:31, y:1},{x:32, y:3},{x:33, y:1}];
+
 	for(var key in users) {
 		var user = users[key];
 		if(user.isInGame){
@@ -94,10 +98,19 @@ Handler.prototype.startGame = function(msg, session, next) {
 		}
 		user.itemId = (user.camp === 0) ? (Math.floor(Math.random()*12) + 1) : 0;
 		user.isInGame = true;
+		var point = (user.camp === 0) ? pos0[++idx0] : pos1[++idx1];
+		user.position.x = point.x * 32 + 16;
+		user.position.y = point.y * 32 + 16;
+		user.speed = (user.camp === 0) ? 100 : 120;
 
 		channel.add(user.uid, user.sid);
-		gamePlayers.push({no: no, uid: user.uid, camp: user.camp, itemId: user.itemId});
-		++no;
+		gamePlayers.push({
+			uid: user.uid, 
+			camp: user.camp, 
+			itemId: user.itemId,
+			position: user.position,
+			speed: user.speed
+		});
 	}
 	// 开启回合
 	LockStep.startTurn(channel);

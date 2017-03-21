@@ -68,7 +68,8 @@ cc.Class({
                 player.itemId = gp.itemId;
                 player.camp = gp.camp;
                 player.isInGame = true;
-                player.no = gp.no;
+                player.position = gp.position;
+                player.speed = gp.speed;
                 if(player.uid === Player.uid){
                     Player.itemId = gp.itemId;
                     Player.camp = gp.camp;

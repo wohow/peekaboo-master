@@ -51,7 +51,8 @@ cc.Class({
 
     // 旋转指示器
     updateIndicator: function(dir){
-        this.indicatorNode.rotation = dir;
+        Tween.killTweensOf(this.indicatorNode, false);
+        Tween.to(this.indicatorNode, 0.01, {rotation: dir});
     },
 
     // 刷新子弹数量

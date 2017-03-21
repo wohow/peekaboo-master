@@ -59,9 +59,9 @@ net.send = function(route, msg, cb, isWait){
 	// }
 
 	if(!!cb){
-		request(pro.route, msg, cb, isWait);
+		pomelo.request(route, msg, cb);
 	}else{
-		notify(pro.route, msg);
+		pomelo.notify(route, msg);
 	}
 };
 

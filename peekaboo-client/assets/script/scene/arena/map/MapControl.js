@@ -112,7 +112,8 @@ cc.Class({
         // 创建角色空节点
         var roleNode = new cc.Node('roleNode'+data.uid);
         // 加入地图
-        this.mapInfo.addRole(data.no, roleNode, data.camp);
+        this.mapInfo.addRole(roleNode);
+        roleNode.position = cc.p(data.position);
         roleNode.zIndex = data.camp;
         // 添加角色统一控制器
         var bin = roleNode.addComponent(binRole);
@@ -168,13 +169,30 @@ cc.Class({
         }
     },
 
-    // 回合更新
-    turnReveal: function (instructions) {
-        for (var i = instructions.length - 1; i >= 0; i--) {
-            var ins = instructions[i];
-            var role = this.getRole(ins.uid);
-            if(role){
-                role.updateMove(ins.direction, ins.position);
+    // 世界玩家状态更新
+    onUpdateWorldState: function (worldStates) {
+        for (var i = worldStates.length - 1; i >= 0; i--) {
+            var state = worldStates[i];
+            var role = this.getRole(state.uid);
+            if(!role || role.isPlayFireAnim)
+                continue;
+            // 设置从服务器来的 权威数据
+            var dir = state.position.x - role.node.x;
+            role.node.position = cc.p(state.position);
+
+            // 如果是自己 这里做服务器调和
+            if(role.uid === Player.uid){
+                this.myRoleControl.serverReconciliation(state.lastSequenceNumber);
+            } else {
+                
+                role.setFlipX(dir);
+                if(state.status === 1){// 移动
+                    role.playAnim('role_run');
+                } else if(state.status === 2){// 开火
+                    // role.playAnim('role_run');
+                } else { // 闲置
+                    role.playAnim('role_idle');
+                }
             }
         }
     },

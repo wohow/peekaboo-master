@@ -14,9 +14,27 @@ function User(opts) {
 	this.isInGame = false;// 是否在游戏中
 
 	// 用于同步
+	this.status = 0;
+	this.speed = 100;
 	this.position = {x:0, y:0};
-	this.direction = {x:0, y:0};// 方向
+	this.lastSequenceNumber = 0;
 }
+
+User.prototype.applyInput = function (input) {
+	this.status = input.status;
+	this.position.x += input.pressTime.x*this.speed;
+	this.position.y += input.pressTime.y*this.speed;
+	this.lastSequenceNumber = input.sequenceNumber;
+};
+
+User.prototype.state = function() {
+	return {
+		uid: this.uid,
+		status: this.status,
+		position: this.position,
+		lastSequenceNumber: this.lastSequenceNumber
+	};
+};
 
 User.prototype.strip = function() {
 	return {
@@ -24,6 +42,9 @@ User.prototype.strip = function() {
 		nickname: this.nickname,
 		camp: this.camp,
 		itemId: this.itemId,
-		isInGame: this.isInGame
+		isInGame: this.isInGame,
+		speed: this.speed,
+		position: this.position,
+		status: this.status
 	};
 };

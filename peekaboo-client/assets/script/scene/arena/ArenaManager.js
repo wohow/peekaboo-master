@@ -61,10 +61,7 @@ cc.Class({
         };
         EventDispatcher.listen(EventType.SYNC_FIRE, self.syncfireCallback);
         // 
-        self.revealCallback = function (data) {
-            self.mapControl.turnReveal(data);
-        };
-        EventDispatcher.listen(EventType.SYNC_REVEAL, self.revealCallback);
+        
         // 玩家离线
         self.userleaveCallback = function(data){
             self.mapControl.removeRole(data.uid);
@@ -122,6 +119,12 @@ cc.Class({
         this.mapControl.startAllEvent();
         // 开启无线子弹
         this.mapControl.roleInfiniteBullet(true);
+
+        var self = this;
+        self.revealCallback = function (data) {
+            self.mapControl.onUpdateWorldState(data.worldStates);
+        };
+        EventDispatcher.listen(EventType.SYNC_REVEAL, self.revealCallback);
     },
 
     // 躲阶段 躲全亮 找全黑

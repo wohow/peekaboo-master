@@ -9,6 +9,10 @@ module.exports = function(app) {
 
 var Handler = function(app) {
   	this.app = app;
+  	this.sid = app.get('serverId');
+
+  	var channel = app.get('channelService').getChannel('worldStateChannel', true);
+	test.startup(channel, 5);
 };
 
 Handler.prototype.login = function(msg, session, next) {
@@ -17,11 +21,16 @@ Handler.prototype.login = function(msg, session, next) {
 	// 生成uid
 	var uid = Math.abs(crc.crc32(nickname)).toString();
 
-	session.bind(uid);
+	var self = this;
+	session.bind(uid, function(){
 
-	test.connect(uid, this.app.sid);
+		console.log(nickname, ' 登陆游戏');
 
-	next(null, {code: 200, uid: uid, nickname: nickname});
+		test.connect(uid, self.sid, nickname);
+
+		next(null, {code: 200, uid: uid, entities: test.entities()});
+	});
+
 };
 
 // 处理输入

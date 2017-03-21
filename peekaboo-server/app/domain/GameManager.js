@@ -39,6 +39,14 @@ exp.users = function(){
 	return arr;
 };
 
+exp.userStutes = function(){
+	var arr = [];
+	for (var k in users) {
+		arr.push(users[k].state());
+	}
+	return arr;
+};
+
 // 获取对应阵营个数
 exp.getCampCount = function () {
 	var dodge = 0, finder = 0;

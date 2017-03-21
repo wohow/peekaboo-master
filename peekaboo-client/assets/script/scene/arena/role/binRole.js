@@ -16,26 +16,22 @@ cc.Class({
     },
 
     onLoad: function(){
-        this.direction = cc.p(0,0);
-        this.isMove = false;
     },
 
     init: function(data, entity){
+        this.speed = data.speed;
         this.uid = data.uid;
         this.camp = data.camp;
-        this.speed = (data.camp+1) * 2;
         this.entity = entity;
         this.entity.setNickname(data.nickname);
-        // 期望位置
-        this.expectPosition = this.node.position;
     },
 
     startEvent: function () {
-        this.schedule(this.smoothMove, 0.01);
+        // this.schedule(this.smoothMove, 0.01);
     },
 
     stopEvent: function () {
-        this.unschedule(this.smoothMove);
+        // this.unschedule(this.smoothMove);
     },
 
     //
@@ -66,7 +62,6 @@ cc.Class({
     // 开火
     fire: function (startPos, targetPos) {
         this.isPlayFireAnim = true;
-        this.expectPosition = this.node.position;
         var anim = this.entity.animation;
         anim.stop('role_attack');
         anim.play('role_attack');
@@ -87,34 +82,28 @@ cc.Class({
         this.fire(startPos, targetPos);
     },
 
-    // 更新移动
-    updateMove: function (direction, position) {
-        consts.sIsRC = false;
-        if(this.isPlayFireAnim)
-            return;
-        if(direction.x === 0 && direction.y === 0){
-            this.playAnim('role_idle');
-            return;
-        }
-        this.setFlipX(direction.x);
-        this.playAnim('role_run');
-
-        this.expectPosition = MapInfo().isWallCollide(position, direction);
+    applyMove: function (pressTime) {
+        this.setFlipX(pressTime.x);
+        this.node.x += pressTime.x*this.speed;
+        this.node.y += pressTime.y*this.speed;
     },
 
-    smoothMove: function () {
-        if(this.isPlayFireAnim){
-            var animState = this.entity.animation.getAnimationState('role_attack');
-            if(!animState.isPlaying){
-                this.isPlayFireAnim = false;
-                this.playAnim('role_idle');
-            }
-        } else if(this.expectPosition.x != this.node.x || this.expectPosition.y != this.node.y){
-            var x = utils.cTo1(this.expectPosition.x - this.node.x);
-            var y = utils.cTo1(this.expectPosition.y - this.node.y);
-            this.node.x += (2 * x);
-            this.node.y += (2 * y);
-        }
+    isCanMove: function (pressTime) {
+        var pos = MapInfo().isWallCollide(this.node.position, {x: pressTime.x*this.speed, y: pressTime.y*this.speed});
+        var x = (pos.x - this.node.x)/this.speed;
+        var y = (pos.y - this.node.y)/this.speed;
+        return {x: x, y: y};
     },
+
+    update: function () {
+        if(!this.isPlayFireAnim){
+            return;
+        }
+        var anim = this.entity.animation;
+        var animState = anim.getAnimationState('role_attack');
+        if(!animState.isPlaying){
+            this.isPlayFireAnim = false;
+        }
+    }
 
 });

@@ -8,7 +8,7 @@ exp.PREPARE_TIME = 30;
 exp.SEARCH_TIME = 120;
 
 // 所有玩家的操作指令
-var instructions = [];
+var entities = [];
 
 // 通道
 var channel = null;
@@ -20,7 +20,7 @@ var prepareTimeout = null;
 // 开启
 exp.startTurn = function (_channel) {
 	channel = _channel;
-	interval = setInterval(onTurn, 50);
+	interval = setInterval(onTurn, 1000/30);
 	
 	// 
 	prepareTimeout = setTimeout(function(){
@@ -40,23 +40,6 @@ exp.stopTurn = function (camp) {
 	clearTimeout(prepareTimeout);
 	exp.onGameOver(camp);
 	GameManager.isStart = false;
-};
-
-// 收集玩家指令
-exp.collectInstruction = function (uid, direction, position) {
-	var instruction = {
-		uid: uid,
-		direction: direction,// 方向
-		position: position// 当前位置
-	};
-	// 找出同一个玩家的相同操作 然后覆盖掉
-	var arr = instructions.filter((m) => m.uid === uid);
-	if(arr.length !== 0){
-		arr[0].direction = direction;
-		arr[0].position = position;
-	} else {
-		instructions.push(instruction);
-	}
 };
 
 // 玩家离开
@@ -102,12 +85,10 @@ exp.onGameOver = function(camp) {
 	channel = null;
 };
 
+
 // 每回合同步玩家 指令
 function onTurn(){
-	if(instructions.length === 0 || !channel)
-		return;
-	// 这里推送每回合的指令
-	channel.pushMessage('onReveal', instructions);
-	// 然后清空
-	instructions = [];
+	
+	var worldStates = GameManager.userStutes();
+	channel.pushMessage('onReveal', {worldStates: worldStates});
 }

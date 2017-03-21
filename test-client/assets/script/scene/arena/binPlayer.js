@@ -10,7 +10,11 @@ cc.Class({
         this.nicknameTxt.string = nickname;
     },
 
-    move: function (){
-
-    }
+    // 移动
+    applyMove: function (pressTime) {
+        this.node.x += pressTime.x*100.0;
+        this.node.y += pressTime.y*100.0;
+    },
+    
+    
 });

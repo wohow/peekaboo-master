@@ -3,9 +3,8 @@ var utils = require('utils');
 var net = require('net');
 var consts = require('consts');
 
-var moveSpeed = 8;// 移动速度
+var input_sequence_number = 0;
 var direction = cc.p(0,0);// 方向
-var lastDirection = {};// 上一次的方向
 
 
 /**
@@ -24,14 +23,13 @@ cc.Class({
 
     init: function(){
         direction = cc.p(0,0);
-        lastDirection = {};
+        this.status = 0; // 0.闲置 1.行走
+        this.pendingInputs = [];
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
-        this.schedule(this.commitMove, 0.06);
     },
 
     stopAllEvent: function() {
-        this.unschedule(this.commitMove);
         cc.systemEvent.off(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
         cc.systemEvent.off(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
     },
@@ -42,7 +40,8 @@ cc.Class({
     },
 
     onKeyDown: function(event){
-        this.move(event, moveSpeed);
+        this.status = 1;
+        this.move(event, 1);
     },
 
     onKeyUp: function(event){
@@ -70,25 +69,51 @@ cc.Class({
         }
     },
 
-    // 提交移动指令
-    commitMove: function () {
-        if(direction.x === 0 && direction.y === 0 && lastDirection.x === 0 && lastDirection.y === 0){
-            return;
+    // 服务器调和
+    serverReconciliation: function (lastSequenceNumber) {
+        var i = 0;
+        while (i < this.pendingInputs.length) {
+            var input = this.pendingInputs[i];
+            if (input.sequenceNumber <= lastSequenceNumber) {
+                this.pendingInputs.splice(i, 1);
+            } else {
+                this.roleClass.applyMove(input.pressTime);
+                i++;
+            }
         }
-
-        if(consts.sIsRC)
-            return;
-        consts.sIsRC = true;
-
-        lastDirection = {x: direction.x, y: direction.y};
-        // 提交信息
-        net.send('connector.gameHandler.commitInstructions', {
-            direction: lastDirection, 
-            position: {x: this.roleClass.expectPosition.x, y: this.roleClass.expectPosition.y}
-        });
     },
 
     update: function (dt) {
+        if(this.status === 0)
+            return;
+
+        var new_dt = dt;
+        if(direction.x === 0 && direction.y === 0){
+            this.status = 0;
+        } else {
+            var x = Math.abs(direction.x*dt);
+            var y = Math.abs(direction.y*dt);
+            var l1 = cc.pLength(cc.p(x, y));
+            var l2 = cc.pLength(cc.p(0, dt));
+            var r = l2 / l1;
+            new_dt = r * dt;
+        }
+
+        var pressTime = this.roleClass.isCanMove({x: direction.x*new_dt, y: direction.y*new_dt});
+
+        var input = {
+            status: this.status,
+            pressTime: pressTime,
+            sequenceNumber: ++input_sequence_number,
+        };
+
+        net.send('connector.gameHandler.processInputs', {input: input});
+
+        // 客户端预测
+        this.roleClass.applyMove(input.pressTime);
+
+        // 记录每次的操作指令 方便后面做调和
+        this.pendingInputs.push(input);
     },
 
 });

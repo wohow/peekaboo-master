@@ -30,6 +30,14 @@ Handler.prototype.commitInstructions  = function(msg, session, next) {
 	LockStep.collectInstruction(session.uid, msg.direction, msg.position);
 };
 
+// 处理输入
+Handler.prototype.processInputs = function(msg, session, next) {
+
+	var user = GameManager.getUser(session.uid);
+
+	user.applyInput(msg.input);
+};
+
 /**
  * 被找到了
  */

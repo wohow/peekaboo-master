@@ -1,6 +1,5 @@
 
 var pomelo = require('pomelo');
-var test = require('./app/domain/test');
 
 /**
  * Init app for client.
@@ -17,9 +16,6 @@ app.configure('production|development', 'connector', function(){
       useDict : true,
       useProtobuf : true
     });
-
-  	var channel = app.get('channelService').createChannel('gameChannel');
-  	test.startup(channel, 20);
 });
 
 // start app

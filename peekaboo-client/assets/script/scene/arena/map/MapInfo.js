@@ -46,8 +46,8 @@ cc.Class({
         // 内墙精灵
         this.wallSprites = [];
         // 出生点
-        this.bornPoints0 = [];
-        this.bornPoints1 = [];
+        var bornPoints0 = '';
+        var bornPoints1 = '';
 
         for (var x = 0; x < this.girdSize.width; x++) {
             for (var y = 0; y < this.girdSize.height; y++) {
@@ -74,12 +74,12 @@ cc.Class({
                 if(this.bornPointNode0.getTileGIDAt(x, y)){
                     let tile = this.bornPointNode0.getTileAt(x, y);
                     tile.visible = false;
-                    this.bornPoints0.push(cc.p(x, this.girdSize.height-1-y));
+                    bornPoints0 += '{x:' + x + ', ' + 'y:' + (this.girdSize.height-1-y) + '},';
                 }
                 if(this.bornPointNode1.getTileGIDAt(x, y)){
                     let tile = this.bornPointNode1.getTileAt(x, y);
                     tile.visible = false;
-                    this.bornPoints1.push(cc.p(x, this.girdSize.height-1-y));
+                    bornPoints1 += '{x:' + x + ', ' + 'y:' + (this.girdSize.height-1-y) + '},';
                 }
             }
         }
@@ -92,6 +92,8 @@ cc.Class({
 
         // console.log('空地=', this.emptyGrounds.length);
         // console.log('精灵=', this.wallSprites.length);
+        // console.log('000000=', bornPoints0);
+        // console.log('111111=', bornPoints1);
     },
 
     // 随机隐藏道具
@@ -118,12 +120,12 @@ cc.Class({
     },
 
     // 添加一个角色
-    addRole: function(no, node, camp){
+    addRole: function(node){
         this.roleNode.addChild(node);
         // 设置位置
-        var bornPoints = this['bornPoints'+camp];
-        var pos = bornPoints[no];
-        node.position = cc.p(pos.x*this.tileSize.width + this.tielSizeHalf.x, pos.y*this.tileSize.height + this.tielSizeHalf.y);
+        // var bornPoints = this['bornPoints'+camp];
+        // var pos = bornPoints[no];
+        // node.position = cc.p(pos.x*this.tileSize.width + this.tielSizeHalf.x, pos.y*this.tileSize.height + this.tielSizeHalf.y);
     },
 
     // 添加一个子弹
@@ -164,26 +166,31 @@ cc.Class({
             let nx = Math.floor(tx);
             if(this.isCollide(nx, ny1) || this.isCollide(nx, ny2)){
                 x = (nx+1)*this.tileSize.width + this.tielSizeHalf.x;
+                // return false;
             }
         } else if(direction.x > 0){// 右
             let nx = Math.ceil(tx);
             if(this.isCollide(nx, ny1) || this.isCollide(nx, ny2)){
                 x = (nx-1)*this.tileSize.width + this.tielSizeHalf.x;
+                // return false;
             }
         }
         if(direction.y < 0){// 下
             let ny = Math.floor(ty);
             if(this.isCollide(nx1, ny) || this.isCollide(nx2, ny)){
                 y = (ny+1)*this.tileSize.height + this.tielSizeHalf.y;
+                // return false;
             }
         }
         if(direction.y > 0){// 上
             let ny = Math.ceil(ty);
             if(this.isCollide(nx1, ny) || this.isCollide(nx2, ny)){
                 y = (ny-1)*this.tileSize.height + this.tielSizeHalf.y;
+                // return false;
             }
         }
         return cc.p(x, y);
+        // return true;
     },
 
 });
