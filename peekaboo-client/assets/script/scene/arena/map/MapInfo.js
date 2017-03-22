@@ -98,7 +98,6 @@ cc.Class({
 
     // 随机隐藏道具
     randomHideItem: function(indexs){
-        // var indexs = utils.randomIndex(this.wallSprites.length, count);
         for (var i = 0; i < indexs.length; i++) {
             this.wallSprites[indexs[i]].visible = false;
             // this.wallSprites[i].opacity = 0;
@@ -107,7 +106,6 @@ cc.Class({
 
     // 随机生成道具
     randomGenerateItem: function(indexs){
-        var indexs = utils.randomIndex(this.emptyGrounds.length, count);
         for (var i = 0; i < indexs.length; i++) {
             var point = this.emptyGrounds[indexs[i]];
             // console.log(point);
