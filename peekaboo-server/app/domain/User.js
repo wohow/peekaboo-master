@@ -17,7 +17,8 @@ function User(opts) {
 	this.status = 0;
 	this.speed = 100;
 	this.position = {x:0, y:0};
-	this.lastSequenceNumber = 0;
+	this.lastSequenceNumber = 0;// 输入编号
+	this.yetSequenceNumber = -1;// 已经发送的编号
 }
 
 User.prototype.applyInput = function (input) {

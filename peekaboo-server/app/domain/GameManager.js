@@ -42,7 +42,12 @@ exp.users = function(){
 exp.userStutes = function(){
 	var arr = [];
 	for (var k in users) {
-		arr.push(users[k].state());
+		var user = users[k];
+		// 这里避免重复发相同的
+		if(user.yetSequenceNumber !== user.lastSequenceNumber){
+			user.yetSequenceNumber = user.lastSequenceNumber;
+			arr.push(user.state());
+		}
 	}
 	return arr;
 };

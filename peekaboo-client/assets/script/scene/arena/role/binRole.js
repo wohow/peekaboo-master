@@ -23,6 +23,7 @@ cc.Class({
         this.uid = data.uid;
         this.camp = data.camp;
         this.entity = entity;
+        this.lastSequenceNumber = 1;// 输入编号
         this.entity.setNickname(data.nickname);
     },
 

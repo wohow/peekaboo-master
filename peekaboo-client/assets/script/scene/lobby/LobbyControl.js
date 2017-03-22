@@ -25,6 +25,7 @@ cc.Class({
     // 点击开始按钮
     onClickStart: function(){
         var nickname = this.nicknameEditbox.string;
+        nickname = nickname.trim();
         if(nickname === ''){
             Tip().showMessage('名字不能为空');
             return;

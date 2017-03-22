@@ -1,7 +1,7 @@
 
 var Tween = require('TweenLite');
 var utils = require('utils');
-const range = 300;
+const range = 200;
 
 /**
 * 子弹
@@ -47,7 +47,7 @@ cc.Class({
             bin.wasfound();
 
             // 这里射击人加子弹
-            this.owner.addBullet(5);
+            this.owner.addBullet(3);
 
         } else if(other.node.group === 'wall'){
             // console.log('on collision wall');

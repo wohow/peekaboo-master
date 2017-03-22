@@ -4,6 +4,7 @@ const DodgeRoleControl = require('DodgeRoleControl');
 const FinderRoleControl = require('FinderRoleControl');
 var Player = require('Player');
 var GameData = require('GameData');
+var Tween = require('TweenLite');
 
 /**
  * 地图控制器
@@ -176,16 +177,31 @@ cc.Class({
             var role = this.getRole(state.uid);
             if(!role || role.isPlayFireAnim)
                 continue;
-            // 设置从服务器来的 权威数据
-            var dir = state.position.x - role.node.x;
-            role.node.position = cc.p(state.position);
 
             // 如果是自己 这里做服务器调和
             if(role.uid === Player.uid){
-                this.myRoleControl.serverReconciliation(state.lastSequenceNumber);
-            } else {
                 
+                role.node.position = cc.p(state.position);
+                this.myRoleControl.serverReconciliation(state.lastSequenceNumber);
+
+            } else {// 设置从服务器来的 权威数据
+                var dir = state.position.x - role.node.x;
                 role.setFlipX(dir);
+                
+                // 这里判断输入编号 跳跃几次
+                // var count = state.lastSequenceNumber - role.lastSequenceNumber;
+                // if(count < 0){
+                //     console.log('count=', count);
+                //     return;
+                // }
+                // role.lastSequenceNumber = state.lastSequenceNumber;
+                // if(count > 2){
+                //     Tween.killTweensOf(role.node, true);
+                //     Tween.to(role.node, count*0.02, {x: state.position.x, y: state.position.y});
+                // } else {
+                    role.node.position = cc.p(state.position);
+                // }
+
                 if(state.status === 1){// 移动
                     role.playAnim('role_run');
                 } else if(state.status === 2){// 开火

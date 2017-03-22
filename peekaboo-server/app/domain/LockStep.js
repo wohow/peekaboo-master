@@ -90,5 +90,8 @@ exp.onGameOver = function(camp) {
 function onTurn(){
 	
 	var worldStates = GameManager.userStutes();
+	if(worldStates.length === 0)
+		return;
+	
 	channel.pushMessage('onReveal', {worldStates: worldStates});
 }
