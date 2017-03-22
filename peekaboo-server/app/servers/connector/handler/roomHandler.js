@@ -78,8 +78,8 @@ Handler.prototype.startGame = function(msg, session, next) {
 
 	GameManager.isStart = true;
 
-	var hideItemIndexs = randomIndex(137, 20);
-	var generateItemIndexs = randomIndex(857, 20);
+	var hideItemIndexs = randomIndex(182, 20);
+	var generateItemIndexs = randomIndex(826, 20);
 
 	// 创建游戏专用通道
 	var channel = this.app.get('channelService').createChannel('gameChannel');

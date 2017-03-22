@@ -107,7 +107,7 @@ cc.Class({
 
     // 随机生成道具
     randomGenerateItem: function(indexs){
-        // var indexs = utils.randomIndex(this.emptyGrounds.length, count);
+        var indexs = utils.randomIndex(this.emptyGrounds.length, count);
         for (var i = 0; i < indexs.length; i++) {
             var point = this.emptyGrounds[indexs[i]];
             // console.log(point);
