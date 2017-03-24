@@ -91,12 +91,16 @@ cc.Class({
         if(direction.x === 0 && direction.y === 0){
             this.status = 0;
         } else {
-            var x = Math.abs(direction.x*dt);
-            var y = Math.abs(direction.y*dt);
-            var l1 = cc.pLength(cc.p(x, y));
-            var l2 = cc.pLength(cc.p(0, dt));
-            var r = l2 / l1;
-            new_dt = r * dt;
+            var arf = Math.abs(Math.abs(direction.x) - Math.abs(direction.y));
+            if(arf === 0){// 这里说明要斜着走
+                new_dt = dt * 0.7071;// Math.sin( Math.atan(dt/dt) ) = 0.7071067811865475;
+            }
+            // var x = Math.abs(direction.x*dt);
+            // var y = Math.abs(direction.y*dt);
+            // var l1 = cc.pLength(cc.p(x, y));
+            // var l2 = cc.pLength(cc.p(0, dt));
+            // var r = l2 / l1;
+            // new_dt = r * dt;
         }
 
         var pressTime = this.roleClass.isCanMove({x: direction.x*new_dt, y: direction.y*new_dt});
