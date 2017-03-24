@@ -6,6 +6,7 @@ var exp = module.exports;
 
 exp.rtt = 10;// rtt 记录往返延迟
 
+
 /** 服务器地址 */
 exp.connectorAddress = 
 {
